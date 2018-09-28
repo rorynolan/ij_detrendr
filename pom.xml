@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.rorynolan.imagejplugins.detrendr</groupId>
     <artifactId>Detrendr</artifactId>
-    <version>0.0.0.9000</version>
+    <version>0.0.0.9000-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main-class>Detrendr</main-class>
@@ -27,6 +27,11 @@
         <dependency>
             <groupId>net.imagej</groupId>
             <artifactId>imagej</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>26.0-jre</version>
         </dependency>
     </dependencies>
     <build>
