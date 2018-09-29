@@ -17,7 +17,12 @@ import java.util.zip.DataFormatException;
  */
 @Plugin(type = Command.class, menuPath = "Plugins>Detrendr")
 public class Detrendr implements Command {
-  static void main(String[] args) throws NoSuchElementException {
+  /**
+   * This is just for the developers of the package to test how it's going.
+   * @param args Should be left blank.
+   * @throws NoSuchElementException
+   */
+  public static void main(String[] args) throws NoSuchElementException {
     Class<?> cls = Detrendr.class;
     String url = cls.getResource("/" + cls.getName().replace('.', '/') + ".class").toString();
     int lastIdx = url.lastIndexOf('/');
