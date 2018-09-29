@@ -4,6 +4,8 @@ import Jama.Matrix;
 import ij.ImagePlus;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
+import java.util.zip.DataFormatException;
+
 class Sim {
 
   private static Matrix poisMat(int nPx, double[] frameMeans,
@@ -20,7 +22,9 @@ class Sim {
     return out;
   }
 
-  static Matrix simMat(ImagePlus oneChImPlus, int seed) {
+  static Matrix simMat(ImagePlus oneChImPlus, int seed)
+          throws DataFormatException {
+    oneChImPlus = MyImg.assertOneChManyFrames(oneChImPlus, "simMat");
     Matrix oneChMat = MyImg.convertToMatrix(oneChImPlus);
     int oneChMatNCol = oneChMat.getColumnDimension();
     int oneChMatNRow = oneChMat.getRowDimension();

@@ -62,7 +62,20 @@ class MyImg {
     return channelArr[channel - 1];
   }
 
-  static Matrix convertToMatrix(ImagePlus oneChImgPlus) {
+  static ImagePlus assertOneChManyFrames(ImagePlus imPlus, String currentFun)
+  throws DataFormatException {
+    int nCh = imPlus.getDimensions()[2];
+    if (nCh != 1) {
+      throw new IllegalArgumentException("The function " + currentFun +
+              "() expects an ImagePlus with one channel.\n" +
+              "  * You have passed an ImagePlus with " + nCh + "channels.");
+    }
+    return makeMine(imPlus);
+  }
+
+  static Matrix convertToMatrix(ImagePlus oneChImgPlus)
+  throws DataFormatException {
+    oneChImgPlus = assertOneChManyFrames(oneChImgPlus, "convertToMatrix");
     int[] imDim = oneChImgPlus.getDimensions();
     Matrix out = new Matrix(imDim[3], imDim[0] * imDim[1]);
     for (int slice = 0; slice != imDim[3]; ++slice) {
@@ -80,13 +93,18 @@ class MyImg {
   static ImagePlus convertToImagePlus(Matrix mat, int width)
           throws IllegalArgumentException {
     int matNCol = mat.getColumnDimension(), matNRow = mat.getRowDimension();
+    if (width < 1) {
+      throw new IllegalArgumentException(
+              "width must be positive.\n" +
+                      "  * You have specified a width of " + width + "."
+      );
+    }
     if ((matNCol % width) != 0) {
-      IllegalArgumentException e = new IllegalArgumentException(
+      throw new IllegalArgumentException(
               "width must divide evenly into the number of columns in mat. \n" +
                       "  * Your mat has " + matNCol + " columns and your width is " +
                       width + "."
       );
-      throw e;
     }
     int height = matNCol / width;
     ImageStack imStack = ImageStack.create(width, height, matNRow, 16);

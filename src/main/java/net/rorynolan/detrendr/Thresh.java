@@ -5,10 +5,31 @@ import ij.ImagePlus;
 import ij.process.AutoThresholder;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 
+import java.util.zip.DataFormatException;
+
+/**
+ * Class containing static function for tresholding stacks.
+ */
 class Thresh {
+  /**
+   * Threshold a stack based on the mean intensity profile. For a given xy pixel position in the stack, either all of
+   * the pixels in all of the frames at that position are thresholded away to zero or none are.
+   * @param oneChImPlus A one channel, multi-frame ImagePlus.
+   * @param method For choosing the threshold automatically. Must be one of "Default", "Huang", "Intermodes", "IsoData",
+   *               "Li", "MaxEntropy", "Mean", "MinError","Minimum", "Moments", "Otsu", "Percentile", "RenyiEntropy",
+   *               "Shanbhag", "Triangle", or "Yen".
+   * @param manualThresh A positive number. Pixels with a mean intensity of less than manualThresh will be thresholded
+   *                     away to zero. If manualThresh is set (greater than zero), it overrides method, i.e. it does not
+   *                     matter what method is set to. To be clear, if you want to use manualThresh, set
+   *                     method = "None".
+   * @return The stack-thresholded image.
+   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+   */
   static ImagePlus stackThresh(ImagePlus oneChImPlus,
                                        String method,
-                                       double manualThresh) {
+                                       double manualThresh)
+          throws DataFormatException {
+    oneChImPlus = MyImg.assertOneChManyFrames(oneChImPlus, "stackThresh");
     int width = oneChImPlus.getDimensions()[0];
     Matrix mat = MyImg.convertToMatrix(oneChImPlus);
     int nRow = mat.getRowDimension();

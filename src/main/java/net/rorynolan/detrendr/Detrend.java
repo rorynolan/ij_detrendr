@@ -8,7 +8,11 @@ import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import java.util.stream.IntStream;
 import java.util.zip.DataFormatException;
 
-class Detrend {
+/**
+ * Class containing static functions for detrending.
+ * @author Rory Nolan
+ */
+public class Detrend {
 
   private static long getMaxSwaps(Matrix mat) {
     int nRow = mat.getRowDimension();
@@ -103,14 +107,40 @@ class Detrend {
       }
     }
   }
-  private static ImagePlus performSwaps(ImagePlus oneChImPlus, long nSwaps, int seed) {
+
+  /**
+   * Perform the swaps for Robin Hood detrending.
+   * @param oneChImPlus A one-channel, multi-frame ImagePlus.
+   * @param nSwaps The number of swaps to perform, probably calculated with calcIdealSwaps.
+   * @param seed For random number generation, to select which counts to swap.
+   * @return The detrended image.
+   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+   */
+  public static ImagePlus performSwaps(ImagePlus oneChImPlus, long nSwaps, int seed)
+          throws DataFormatException {
+    oneChImPlus = MyImg.assertOneChManyFrames(oneChImPlus, "performSwaps");
+    if (nSwaps < 0) {
+      throw new IllegalArgumentException(
+              "nSwaps must be positive.\n" +
+                      "  * You have specified nSwaps = " + nSwaps + "."
+      );
+    }
     int width = oneChImPlus.getDimensions()[0];
     Matrix mat = MyImg.convertToMatrix(oneChImPlus);
     performSwaps(mat, mat.copy(), nSwaps, seed);
     return MyImg.convertToImagePlus(mat, width);
   }
 
-  private static long calcIdealSwaps(ImagePlus oneChImPlus, int seed) {
+  /**
+   * Calculate the ideal number of swaps to make on an image during Robin Hood detrending.
+   * @param oneChImPlus A one-channel, multi-frame ImagePlus.
+   * @param seed For random number generation during simulations.
+   * @return The ideal number of swaps.
+   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+   */
+  public static long calcIdealSwaps(ImagePlus oneChImPlus, int seed)
+          throws DataFormatException {
+    oneChImPlus = MyImg.assertOneChManyFrames(oneChImPlus, "calcIdealSwaps");
     Matrix simMat = Sim.simMat(oneChImPlus, seed++);
     double lowerMeanB = MyStats.colsMeanBrightnessB(simMat);
     if (lowerMeanB <= 1) {
@@ -162,7 +192,14 @@ class Detrend {
     return swaps[MyStats.whichMin(diffs1)];
   }
 
-  static ImagePlus detrend(ImagePlus imPlus, int seed)
+  /**
+   * Detrend an ImagePlus with the Robin Hood algorithm, automatically choosing the number of swaps.
+   * @param imPlus The multi-frame image to detrend.
+   * @param seed For random number generation for simulations and swapping.
+   * @return The detrended image.
+   * @throws DataFormatException if imPlus has time and z axes.
+   */
+  public static ImagePlus detrend(ImagePlus imPlus, int seed)
   throws DataFormatException {
     ImagePlus myImPlus = MyImg.makeMine(imPlus);
     int nCh = myImPlus.getDimensions()[2];

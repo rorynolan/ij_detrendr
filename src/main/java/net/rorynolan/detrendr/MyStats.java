@@ -9,7 +9,7 @@ import java.util.zip.DataFormatException;
 
 class MyStats {
 
-  static long sum(int[] data) {
+  private static long sum(int[] data) {
     long sum = 0;
     for(int a : data)
       sum += a;
@@ -22,7 +22,7 @@ class MyStats {
     return sum;
   }
 
-  static double mean(int[] data) {
+  private static double mean(int[] data) {
     return sum(data) / data.length;
   }
   static double mean(double[] data) {
@@ -45,7 +45,7 @@ class MyStats {
     double var = temp / (data.length - 1);
     return var / mean;
   }
-  static double brightnessB(SummaryStatistics sumStat) {
+  private static double brightnessB(SummaryStatistics sumStat) {
     return sumStat.getVariance() / sumStat.getMean();
   }
   static Matrix brightnessB(ImagePlus imPlus)
@@ -75,7 +75,7 @@ class MyStats {
     return out;
   }
 
-  static double[] colsBrightnessB(Matrix mat) {
+  private static double[] colsBrightnessB(Matrix mat) {
     int nCol = mat.getColumnDimension();
     int nRow = mat.getRowDimension();
     double[] out = new double[nCol];
