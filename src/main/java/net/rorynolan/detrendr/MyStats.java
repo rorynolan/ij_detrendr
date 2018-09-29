@@ -1,3 +1,5 @@
+package net.rorynolan.detrendr;
+
 import Jama.Matrix;
 import ij.ImagePlus;
 import ij.ImageStack;

@@ -1,3 +1,5 @@
+package net.rorynolan.detrendr;
+
 import Jama.Matrix;
 import ij.ImagePlus;
 import org.apache.commons.math3.distribution.PoissonDistribution;

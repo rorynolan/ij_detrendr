@@ -1,3 +1,5 @@
+package net.rorynolan.detrendr;
+
 class MyString {
 
   private static String last(String[] s) {

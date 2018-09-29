@@ -1,3 +1,5 @@
+package net.rorynolan.detrendr;
+
 import ij.ImagePlus;
 import ij.WindowManager;
 import net.imagej.ImageJ;
@@ -17,7 +19,7 @@ public class Detrendr implements Command {
     String url = cls.getResource("/" + cls.getName().replace('.', '/') + ".class").toString();
     int lastIdx = url.lastIndexOf('/');
     String pluginsDir = url.substring(5, lastIdx);
-    System.out.println(pluginsDir);
+    System.out.println("Plugins directory: " + pluginsDir);
     System.setProperty("plugins.dir", pluginsDir);
     final ImageJ ij = net.imagej.Main.launch(args);
   }

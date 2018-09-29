@@ -3,14 +3,54 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>name.rorynolan.imagejplugins.detrendr</groupId>
+    <groupId>net.rorynolan</groupId>
     <artifactId>Detrendr</artifactId>
-    <version>0.0.0.9000-SNAPSHOT</version>
+    <version>0.0.0.9002-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main-class>Detrendr</main-class>
+        <main-class>net.rorynolan.detrendr.Detrendr</main-class>
     </properties>
     <name>Detrendr</name>
+    <description>An ImageJ plugin for detrending images with the Robin Hood algorithm.</description>
+    <url>https://github.com/rorynolan/ij_detrendr</url>
+    <inceptionYear>2018</inceptionYear>
+    <licenses>
+        <license>
+            <name>3-Clause BSD License</name>
+            <url>https://opensource.org/licenses/BSD-3-Clause</url>
+            <distribution>repo</distribution>
+            <comments>Free for non-profit purposes only. Businesses need permission.</comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>RoryNolan</id>
+            <name>Rory Nolan</name>
+            <url>http://rorynolan.rbind.io/</url>
+            <roles>
+                <role>lead</role>
+                <role>developer</role>
+                <role>maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>SergiPadillaParra</id>
+            <name>Sergi Padilla-Parra</name>
+            <url>https://www.researchgate.net/profile/Sergi_Padilla-Parra</url>
+            <roles>
+                <role>reviewer</role>
+                <role>supervisor</role>
+            </roles>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/rorynolan/ij_detrendr/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/rorynolan/ij_detrendr</url>
+    </ciManagement>
     <parent>
         <groupId>net.imagej</groupId>
         <artifactId>pom-imagej</artifactId>
@@ -28,11 +68,6 @@
             <groupId>net.imagej</groupId>
             <artifactId>imagej</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>26.0-jre</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -44,6 +79,22 @@
                             <mainClass>${main-class}</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>
+                        ${project.build.directory}
+                    </outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
