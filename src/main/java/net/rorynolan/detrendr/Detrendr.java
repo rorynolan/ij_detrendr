@@ -12,9 +12,12 @@ import org.scijava.command.Command;
 import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
+/**
+ * The Detrendr ImageJ plugin class.
+ */
 @Plugin(type = Command.class, menuPath = "Plugins>Detrendr")
 public class Detrendr implements Command {
-  public static void main(String[] args) throws NoSuchElementException {
+  static void main(String[] args) throws NoSuchElementException {
     Class<?> cls = Detrendr.class;
     String url = cls.getResource("/" + cls.getName().replace('.', '/') + ".class").toString();
     int lastIdx = url.lastIndexOf('/');
@@ -67,6 +70,9 @@ public class Detrendr implements Command {
     return 1;
   }
 
+  /**
+   * This is the method that is actually called when the plugin is opened in ImageJ.
+   */
   @Override
   public void run() {
     int nOpenImgs = WindowManager.getWindowCount();
