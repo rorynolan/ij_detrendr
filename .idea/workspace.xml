@@ -21,25 +21,28 @@
     <session id="1157126725">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="13" />
           <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="4" />
           <entry key="project.open.time.6" value="3" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
           <entry key="java" value="22854" />
+          <entry key="md" value="80" />
           <entry key="xml" value="660" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="22854" />
+          <entry key="Markdown" value="80" />
           <entry key="PLAIN_TEXT" value="5" />
           <entry key="XML" value="660" />
         </counts>
@@ -48,6 +51,7 @@
         <counts>
           <entry key="iml" value="2" />
           <entry key="java" value="19" />
+          <entry key="md" value="1" />
           <entry key="pom" value="3" />
           <entry key="xml" value="2" />
         </counts>
@@ -56,6 +60,7 @@
         <counts>
           <entry key="IDEA_MODULE" value="2" />
           <entry key="JAVA" value="19" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="XML" value="5" />
         </counts>
       </usages-collector>
@@ -67,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="85">
               <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -80,17 +85,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
               <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
-              <folding>
-                <element signature="e#2359#2360#0" expanded="true" />
-                <element signature="e#2377#2378#0" expanded="true" />
-                <element signature="e#2402#2403#0" expanded="true" />
-                <element signature="e#2420#2421#0" expanded="true" />
-              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -98,7 +106,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-627">
+            <state relative-caret-position="969">
               <caret line="64" column="34" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -119,7 +127,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1388">
+            <state relative-caret-position="646">
               <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
             </state>
           </provider>
@@ -137,7 +145,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Sim.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
+            <state relative-caret-position="425">
               <caret line="29" column="50" selection-start-line="29" selection-start-column="50" selection-end-line="29" selection-end-column="50" />
             </state>
           </provider>
@@ -146,7 +154,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Thresh.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1082">
+            <state relative-caret-position="340">
               <caret line="25" column="92" selection-start-line="25" selection-start-column="92" selection-end-line="25" selection-end-column="92" />
             </state>
           </provider>
@@ -203,6 +211,7 @@
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Thresh.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -232,46 +241,14 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
               <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="detrendr" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
@@ -319,11 +296,12 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538245379568" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="SearchEverywhereHistoryKey" value="code style&#9;ACTION&#9;ChangeCodeStyleScheme" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538246010400" />
+    <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -369,9 +347,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="967" extended-state="6" />
+    <frame x="0" y="23" width="1680" height="967" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49935484" visible="true" weight="0.2887668" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49935484" visible="true" weight="0.2924298" />
       <window_info id="Structure" order="1" sideWeight="0.50064516" side_tool="true" weight="0.26037195" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -385,7 +364,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32914287" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.18171428" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.18171428" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32914287" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.117714286" />
@@ -423,89 +402,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MyOneChImg.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Brightness.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Detrend.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="49" column="7" selection-start-line="49" selection-start-column="7" selection-end-line="49" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getMaxSwaps#1;class#Detrend#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MyStats.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2210">
-          <caret line="136" column="22" selection-start-line="136" selection-start-column="22" selection-end-line="136" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#532#533#0" expanded="true" />
-            <element signature="e#572#573#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Sim.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MyString.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="67" selection-start-line="31" selection-start-column="67" selection-end-line="31" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Detrendr.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1564">
-          <caret line="96" column="3" selection-start-line="96" selection-start-column="3" selection-end-line="96" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MyMat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Thresh.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="49" column="21" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Detrend.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/MyStats.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Sim.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/MyString.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Detrendr.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/MyMat.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/Thresh.java" />
     <entry file="file://$PROJECT_DIR$/ij_detrendr.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MyImg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/MyImg.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="148">
           <caret line="10" column="64" lean-forward="true" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getMaxSwaps#0;class#Detrend#0" />
+            <element signature="method#getMaxSwaps#1;class#Detrend#0" />
+            <element signature="method#performSwaps#0;class#Detrend#0" />
+            <element signature="method#calcIdealSwaps#0;class#Detrend#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="64" column="34" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -518,7 +453,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1388">
+        <state relative-caret-position="646">
           <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
         </state>
       </provider>
@@ -530,41 +465,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-627">
-          <caret line="64" column="34" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Sim.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
+        <state relative-caret-position="425">
           <caret line="29" column="50" selection-start-line="29" selection-start-column="50" selection-end-line="29" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Thresh.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1082">
+        <state relative-caret-position="340">
           <caret line="25" column="92" selection-start-line="25" selection-start-column="92" selection-end-line="25" selection-end-column="92" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getMaxSwaps#0;class#Detrend#0" />
-            <element signature="method#getMaxSwaps#1;class#Detrend#0" />
-            <element signature="method#performSwaps#0;class#Detrend#0" />
-            <element signature="method#calcIdealSwaps#0;class#Detrend#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -572,12 +483,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="22" column="35" selection-start-line="22" selection-start-column="35" selection-end-line="22" selection-end-column="35" />
-          <folding>
-            <element signature="e#2359#2360#0" expanded="true" />
-            <element signature="e#2377#2378#0" expanded="true" />
-            <element signature="e#2402#2403#0" expanded="true" />
-            <element signature="e#2420#2421#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
