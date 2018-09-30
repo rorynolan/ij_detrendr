@@ -97,13 +97,15 @@ public class Detrend {
       }
       int frameGetting = frameGettingIntDist.sample();
       mat.set(frameGetting, pxLosing, mat.get(frameGetting, pxLosing) + 1);
-      if ((--framesCanLose[frameLosing]) <= 0) {
-        frameLosingWeights[frameLosing] = 0;
-        frameLosingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameLosingWeights);
-      }
-      if ((--framesCanGet[frameGetting]) <= 0) {
-        frameGettingWeights[frameGetting] = 0;
-        frameGettingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameGettingWeights);
+      if (swapNum != performingSwaps - 1) {
+        if ((--framesCanLose[frameLosing]) <= 0) {
+          frameLosingWeights[frameLosing] = 0;
+          frameLosingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameLosingWeights);
+        }
+        if ((--framesCanGet[frameGetting]) <= 0) {
+          frameGettingWeights[frameGetting] = 0;
+          frameGettingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameGettingWeights);
+        }
       }
     }
   }

@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MyImg</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">net.rorynolan.detrendr</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MyImg (net.rorynolan.detrendr)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MyImg</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    71.4%
+  </span>
+  <span class="absValue">
+    (35/ 49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package net.rorynolan.detrendr;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import Jama.Matrix;
+<i>4</i>&nbsp;import ij.ImagePlus;
+<i>5</i>&nbsp;import ij.ImageStack;
+<i>6</i>&nbsp;import ij.plugin.ChannelSplitter;
+<i>7</i>&nbsp;import ij.plugin.CompositeConverter;
+<i>8</i>&nbsp;import ij.process.ImageProcessor;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.zip.DataFormatException;
+<i>11</i>&nbsp;
+<b class="nc"><i>12</i>&nbsp;class MyImg {</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;  static ImagePlus makeMine(ImagePlus imPlus)
+<i>15</i>&nbsp;          throws DataFormatException {
+<b class="fc"><i>16</i>&nbsp;    int[] dim = imPlus.getDimensions();</b>
+<b class="fc"><i>17</i>&nbsp;    if (dim[3] &gt; 1 &amp;&amp; dim[4] &gt; 1) {</b>
+<b class="nc"><i>18</i>&nbsp;      DataFormatException e = new DataFormatException(</b>
+<i>19</i>&nbsp;              &quot;Your image has volume (z) and time (frame) axes, &quot; +
+<i>20</i>&nbsp;                      &quot;i.e. it has both slices and frames. &quot; +
+<i>21</i>&nbsp;                      &quot;detrendr is made to deal with one or the other, &quot; +
+<i>22</i>&nbsp;                      &quot;but it can&#39;t deal with both.&quot;);
+<b class="nc"><i>23</i>&nbsp;      throw e;</b>
+<i>24</i>&nbsp;    }
+<b class="fc"><i>25</i>&nbsp;    if (dim[3] == 1 &amp;&amp; dim[4] == 1) {</b>
+<b class="nc"><i>26</i>&nbsp;      DataFormatException e = new DataFormatException(</b>
+<i>27</i>&nbsp;              &quot;Your image only has one frame. To be detrendable, &quot; +
+<i>28</i>&nbsp;                      &quot;an image must have more than one frame.&quot;
+<i>29</i>&nbsp;      );
+<b class="nc"><i>30</i>&nbsp;      throw e;</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;    ImagePlus out;
+<b class="fc"><i>33</i>&nbsp;    if (imPlus.getType() == ImagePlus.COLOR_RGB) {</b>
+<b class="nc"><i>34</i>&nbsp;      out = CompositeConverter.makeComposite(imPlus);</b>
+<b class="nc"><i>35</i>&nbsp;      dim = out.getDimensions();</b>
+<i>36</i>&nbsp;    } else {
+<b class="fc"><i>37</i>&nbsp;      out = imPlus;</b>
+<i>38</i>&nbsp;    }
+<b class="fc"><i>39</i>&nbsp;    out.setDimensions(dim[2], Math.max(dim[3], dim[4]), Math.min(dim[3], dim[4]));</b>
+<b class="fc"><i>40</i>&nbsp;    return out;</b>
+<i>41</i>&nbsp;  }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;  static ImagePlus makeMyOneCh(ImagePlus imPlus,
+<i>44</i>&nbsp;                               int channel)
+<i>45</i>&nbsp;          throws IllegalArgumentException {  // channel is 1-based
+<b class="fc"><i>46</i>&nbsp;    if (channel &lt; 1) {</b>
+<b class="nc"><i>47</i>&nbsp;      IllegalArgumentException e = new IllegalArgumentException(</b>
+<i>48</i>&nbsp;              &quot;\n  * The channel number must be greater than or equal to 1.&quot;
+<i>49</i>&nbsp;      );
+<b class="nc"><i>50</i>&nbsp;      throw e;</b>
+<i>51</i>&nbsp;    }
+<b class="fc"><i>52</i>&nbsp;    ImagePlus[] channelArr = ChannelSplitter.split(imPlus);</b>
+<b class="fc"><i>53</i>&nbsp;    int nCh = imPlus.getDimensions()[2];</b>
+<b class="fc"><i>54</i>&nbsp;    if (channel &gt; nCh) {</b>
+<b class="nc"><i>55</i>&nbsp;      IllegalArgumentException e = new IllegalArgumentException(</b>
+<i>56</i>&nbsp;              &quot;\n  * You have requested channel &quot; + channel +
+<i>57</i>&nbsp;                      &quot; of the image, but the image has only &quot; +
+<i>58</i>&nbsp;                      nCh + &quot;channels in total.&quot;
+<i>59</i>&nbsp;      );
+<b class="nc"><i>60</i>&nbsp;      throw e;</b>
+<i>61</i>&nbsp;    }
+<b class="fc"><i>62</i>&nbsp;    return channelArr[channel - 1];</b>
+<i>63</i>&nbsp;  }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;  static ImagePlus assertOneChManyFrames(ImagePlus imPlus, String currentFun)
+<i>66</i>&nbsp;  throws DataFormatException {
+<b class="fc"><i>67</i>&nbsp;    int nCh = imPlus.getDimensions()[2];</b>
+<b class="fc"><i>68</i>&nbsp;    if (nCh != 1) {</b>
+<b class="nc"><i>69</i>&nbsp;      throw new IllegalArgumentException(&quot;The function &quot; + currentFun +</b>
+<i>70</i>&nbsp;              &quot;() expects an ImagePlus with one channel.\n&quot; +
+<i>71</i>&nbsp;              &quot;  * You have passed an ImagePlus with &quot; + nCh + &quot;channels.&quot;);
+<i>72</i>&nbsp;    }
+<b class="fc"><i>73</i>&nbsp;    return makeMine(imPlus);</b>
+<i>74</i>&nbsp;  }
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;  static Matrix convertToMatrix(ImagePlus oneChImgPlus)
+<i>77</i>&nbsp;  throws DataFormatException {
+<b class="fc"><i>78</i>&nbsp;    oneChImgPlus = assertOneChManyFrames(oneChImgPlus, &quot;convertToMatrix&quot;);</b>
+<b class="fc"><i>79</i>&nbsp;    int[] imDim = oneChImgPlus.getDimensions();</b>
+<b class="fc"><i>80</i>&nbsp;    Matrix out = new Matrix(imDim[3], imDim[0] * imDim[1]);</b>
+<b class="fc"><i>81</i>&nbsp;    for (int slice = 0; slice != imDim[3]; ++slice) {</b>
+<b class="fc"><i>82</i>&nbsp;      oneChImgPlus.setSlice(slice);</b>
+<b class="fc"><i>83</i>&nbsp;      ImageProcessor ip = oneChImgPlus.getProcessor();</b>
+<b class="fc"><i>84</i>&nbsp;      for (int x = 0; x != imDim[0]; ++x) {</b>
+<b class="fc"><i>85</i>&nbsp;        for (int y = 0; y != imDim[1]; ++y) {</b>
+<b class="fc"><i>86</i>&nbsp;          out.set(slice, x + y * imDim[0], ip.get(x, y));</b>
+<i>87</i>&nbsp;        }
+<i>88</i>&nbsp;      }
+<i>89</i>&nbsp;    }
+<b class="fc"><i>90</i>&nbsp;    return out;</b>
+<i>91</i>&nbsp;  }
+<i>92</i>&nbsp;
+<i>93</i>&nbsp;  static ImagePlus convertToImagePlus(Matrix mat, int width)
+<i>94</i>&nbsp;          throws IllegalArgumentException {
+<b class="fc"><i>95</i>&nbsp;    int matNCol = mat.getColumnDimension(), matNRow = mat.getRowDimension();</b>
+<b class="fc"><i>96</i>&nbsp;    if (width &lt; 1) {</b>
+<b class="nc"><i>97</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>98</i>&nbsp;              &quot;width must be positive.\n&quot; +
+<i>99</i>&nbsp;                      &quot;  * You have specified a width of &quot; + width + &quot;.&quot;
+<i>100</i>&nbsp;      );
+<i>101</i>&nbsp;    }
+<b class="fc"><i>102</i>&nbsp;    if ((matNCol % width) != 0) {</b>
+<b class="nc"><i>103</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>104</i>&nbsp;              &quot;width must divide evenly into the number of columns in mat. \n&quot; +
+<i>105</i>&nbsp;                      &quot;  * Your mat has &quot; + matNCol + &quot; columns and your width is &quot; +
+<i>106</i>&nbsp;                      width + &quot;.&quot;
+<i>107</i>&nbsp;      );
+<i>108</i>&nbsp;    }
+<b class="fc"><i>109</i>&nbsp;    int height = matNCol / width;</b>
+<b class="fc"><i>110</i>&nbsp;    ImageStack imStack = ImageStack.create(width, height, matNRow, 16);</b>
+<b class="fc"><i>111</i>&nbsp;    for (int slice = 0; slice != matNRow; ++slice) {</b>
+<b class="fc"><i>112</i>&nbsp;      for (int x = 0; x != width; ++x) {</b>
+<b class="fc"><i>113</i>&nbsp;        for (int y = 0; y != height; ++y) {</b>
+<b class="fc"><i>114</i>&nbsp;          imStack.setVoxel(x, y, slice, mat.get(slice, x + y * width));</b>
+<i>115</i>&nbsp;        }
+<i>116</i>&nbsp;      }
+<i>117</i>&nbsp;    }
+<b class="fc"><i>118</i>&nbsp;    return new ImagePlus(&quot;created_from_jama_matrix&quot;, imStack);</b>
+<i>119</i>&nbsp;  }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-09-30 18:05</div>
+</div>
+</body>
+</html>

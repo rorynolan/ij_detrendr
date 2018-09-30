@@ -7,7 +7,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d453559-5809-4b5d-8dc2-9ed626d255a1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrendr.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrendr.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyImg.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyImg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyStats.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyStats.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyString.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/MyString.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Sim.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Sim.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Thresh.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Thresh.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -16,6 +28,16 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/ij_detrendr$All_in_ij_detrendr.ic" NAME="All in ij_detrendr Coverage Results" MODIFIED="1538327081725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="240" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/coverage" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="1157126725">
@@ -27,41 +49,45 @@
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="4" />
           <entry key="project.open.time.6" value="3" />
-          <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="java" value="22854" />
+          <entry key="java" value="24359" />
           <entry key="md" value="80" />
-          <entry key="xml" value="660" />
+          <entry key="xml" value="673" />
+          <entry key="yml" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="22854" />
+          <entry key="JAVA" value="24359" />
           <entry key="Markdown" value="80" />
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="XML" value="660" />
+          <entry key="XML" value="673" />
+          <entry key="YAML" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="iml" value="2" />
-          <entry key="java" value="19" />
+          <entry key="java" value="20" />
           <entry key="md" value="1" />
           <entry key="pom" value="3" />
-          <entry key="xml" value="2" />
+          <entry key="xml" value="3" />
+          <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="2" />
-          <entry key="JAVA" value="19" />
+          <entry key="JAVA" value="20" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="XML" value="5" />
+          <entry key="XML" value="6" />
+          <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -72,15 +98,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
+            <state relative-caret-position="355">
+              <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#getMaxSwaps#0;class#Detrend#0" />
                 <element signature="method#getMaxSwaps#1;class#Detrend#0" />
-                <element signature="method#performSwaps#0;class#Detrend#0" />
                 <element signature="method#calcIdealSwaps#0;class#Detrend#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -95,22 +129,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+            <state relative-caret-position="373">
+              <caret line="126" column="21" selection-start-line="126" selection-start-column="21" selection-end-line="126" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java">
+        <entry file="file://$PROJECT_DIR$/.travis.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="64" column="34" selection-start-line="64" selection-start-column="30" selection-end-line="64" selection-end-column="34" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="51">
+              <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -127,8 +158,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
+            <state relative-caret-position="-1246">
+              <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+              <folding>
+                <element signature="e#4795#4796#0" expanded="true" />
+                <element signature="e#4827#4828#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -166,6 +201,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -178,6 +214,7 @@
       <find>colsums</find>
       <find>class</find>
       <find>many</find>
+      <find>parent</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -204,14 +241,16 @@
         <option value="$PROJECT_DIR$/src/main/java/MyImg.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyMat.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyString.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Sim.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Thresh.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/.travis.yml" />
+        <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java" />
+        <option value="$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -241,14 +280,38 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
               <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ij_detrendr" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="detrendr" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ij_detrendr" type="b2602c69:ProjectViewProjectNode" />
@@ -293,15 +356,27 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="code style&#9;ACTION&#9;ChangeCodeStyleScheme" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538246010400" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538344436329" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="net.rorynolan.detrendr" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -315,7 +390,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.All in ij_detrendr">
     <configuration name="Detrendr" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="net.rorynolan.detrendr.Detrendr" />
       <module name="ij_detrendr" />
@@ -323,6 +398,57 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="All in ij_detrendr" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ij_detrendr" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DetrendTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ij_detrendr" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.rorynolan.detrendr.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="net.rorynolan.detrendr" />
+      <option name="MAIN_CLASS_NAME" value="net.rorynolan.detrendr.DetrendTest" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DetrendTest.testDetrendingAndBrightness" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ij_detrendr" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.rorynolan.detrendr.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="net.rorynolan.detrendr" />
+      <option name="MAIN_CLASS_NAME" value="net.rorynolan.detrendr.DetrendTest" />
+      <option name="METHOD_NAME" value="testDetrendingAndBrightness" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Detrendr" />
+      <item itemvalue="JUnit.DetrendTest.testDetrendingAndBrightness" />
+      <item itemvalue="JUnit.DetrendTest" />
+      <item itemvalue="JUnit.All in ij_detrendr" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.All in ij_detrendr" />
+        <item itemvalue="JUnit.DetrendTest" />
+        <item itemvalue="JUnit.DetrendTest.testDetrendingAndBrightness" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -337,6 +463,38 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="All_in_ij_detrendr - 2018.09.30 at 17h 43m 31s.xml">
+      <configuration name="All in ij_detrendr" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest - 2018.09.30 at 17h 48m 01s.xml">
+      <configuration name="DetrendTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest - 2018.09.30 at 17h 48m 34s.xml">
+      <configuration name="DetrendTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest - 2018.09.30 at 17h 49m 44s.xml">
+      <configuration name="DetrendTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ij_detrendr - 2018.09.30 at 17h 51m 27s.xml">
+      <configuration name="All in ij_detrendr" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testDetrendingAndBrightness - 2018.09.30 at 17h 58m 11s.xml">
+      <configuration name="DetrendTest.testDetrendingAndBrightness" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest - 2018.09.30 at 18h 00m 04s.xml">
+      <configuration name="DetrendTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest - 2018.09.30 at 18h 03m 10s.xml">
+      <configuration name="DetrendTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ij_detrendr - 2018.09.30 at 18h 03m 31s.xml">
+      <configuration name="All in ij_detrendr" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ij_detrendr - 2018.09.30 at 18h 05m 31s.xml">
+      <configuration name="All in ij_detrendr" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -350,7 +508,7 @@
     <frame x="0" y="23" width="1680" height="967" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49935484" visible="true" weight="0.2924298" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49935484" visible="true" weight="0.2960928" />
       <window_info id="Structure" order="1" sideWeight="0.50064516" side_tool="true" weight="0.26037195" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -364,18 +522,19 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32914287" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.18171428" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.54285717" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32914287" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.117714286" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.24964234" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" weight="0.3297568" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32967034" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.24964234" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" weight="0.3297568" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -413,27 +572,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MyImg.java" />
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="10" column="64" lean-forward="true" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#getMaxSwaps#0;class#Detrend#0" />
-            <element signature="method#getMaxSwaps#1;class#Detrend#0" />
-            <element signature="method#performSwaps#0;class#Detrend#0" />
-            <element signature="method#calcIdealSwaps#0;class#Detrend#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyImg.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="969">
@@ -445,20 +583,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyMat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="31" selection-start-column="31" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="47" column="10" selection-start-line="47" selection-start-column="10" selection-end-line="47" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyString.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="31" selection-start-column="31" selection-end-column="31" />
@@ -479,6 +603,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -486,10 +623,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="355">
+          <caret line="108" column="7" selection-start-line="108" selection-start-column="7" selection-end-line="108" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#getMaxSwaps#0;class#Detrend#0" />
+            <element signature="method#getMaxSwaps#1;class#Detrend#0" />
+            <element signature="method#calcIdealSwaps#0;class#Detrend#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyStats.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1246">
+          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+          <folding>
+            <element signature="e#4795#4796#0" expanded="true" />
+            <element signature="e#4827#4828#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/MyString.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.travis.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="2" selection-start-line="3" selection-start-column="2" selection-end-line="3" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="126" column="21" selection-start-line="126" selection-start-column="21" selection-end-line="126" selection-end-column="21" />
         </state>
       </provider>
     </entry>

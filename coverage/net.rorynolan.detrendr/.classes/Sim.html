@@ -1,0 +1,127 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Sim</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">net.rorynolan.detrendr</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Sim (net.rorynolan.detrendr)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Sim</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.2%
+  </span>
+  <span class="absValue">
+    (20/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package net.rorynolan.detrendr;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import Jama.Matrix;
+<i>4</i>&nbsp;import ij.ImagePlus;
+<i>5</i>&nbsp;import org.apache.commons.math3.distribution.PoissonDistribution;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.zip.DataFormatException;
+<i>8</i>&nbsp;
+<b class="nc"><i>9</i>&nbsp;class Sim {</b>
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;  private static Matrix poisMat(int nPx, double[] frameMeans,
+<i>12</i>&nbsp;                                int seed) {
+<b class="fc"><i>13</i>&nbsp;    int nFrames = frameMeans.length;</b>
+<b class="fc"><i>14</i>&nbsp;    Matrix out = new Matrix(nFrames, nPx);</b>
+<b class="fc"><i>15</i>&nbsp;    for (int frame = 0; frame != nFrames; ++frame) {</b>
+<b class="fc"><i>16</i>&nbsp;      PoissonDistribution pd = new PoissonDistribution(frameMeans[frame]);</b>
+<b class="fc"><i>17</i>&nbsp;      pd.reseedRandomGenerator(seed++);</b>
+<b class="fc"><i>18</i>&nbsp;      for (int px = 0; px != nPx; ++px) {</b>
+<b class="fc"><i>19</i>&nbsp;        out.set(frame, px, pd.sample());</b>
+<i>20</i>&nbsp;      }
+<i>21</i>&nbsp;    }
+<b class="fc"><i>22</i>&nbsp;    return out;</b>
+<i>23</i>&nbsp;  }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  static Matrix simMat(ImagePlus oneChImPlus, int seed)
+<i>26</i>&nbsp;          throws DataFormatException {
+<b class="fc"><i>27</i>&nbsp;    oneChImPlus = MyImg.assertOneChManyFrames(oneChImPlus, &quot;simMat&quot;);</b>
+<b class="fc"><i>28</i>&nbsp;    Matrix oneChMat = MyImg.convertToMatrix(oneChImPlus);</b>
+<b class="fc"><i>29</i>&nbsp;    int oneChMatNCol = oneChMat.getColumnDimension();</b>
+<b class="fc"><i>30</i>&nbsp;    int oneChMatNRow = oneChMat.getRowDimension();</b>
+<b class="fc"><i>31</i>&nbsp;    int nNonZeroCols = 0;</b>
+<b class="fc"><i>32</i>&nbsp;    for (int col = 0; col != oneChMatNCol; ++col) {</b>
+<b class="fc"><i>33</i>&nbsp;      if (!MyStats.allAreNum(MyMat.getCol(oneChMat, col), 0)) {</b>
+<b class="fc"><i>34</i>&nbsp;        ++nNonZeroCols;</b>
+<i>35</i>&nbsp;      }
+<i>36</i>&nbsp;    }
+<b class="fc"><i>37</i>&nbsp;    double[] frameMeans = MyStats.rowsSums(oneChMat);</b>
+<b class="fc"><i>38</i>&nbsp;    for (int frame = 0; frame != oneChMatNRow; ++frame) {</b>
+<b class="fc"><i>39</i>&nbsp;      frameMeans[frame] /= nNonZeroCols;</b>
+<i>40</i>&nbsp;    }
+<b class="fc"><i>41</i>&nbsp;    return poisMat(nNonZeroCols, frameMeans, seed);</b>
+<i>42</i>&nbsp;  }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-09-30 18:05</div>
+</div>
+</body>
+</html>
