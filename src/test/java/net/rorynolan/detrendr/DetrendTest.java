@@ -32,9 +32,6 @@ class DetrendTest {
     } catch (DataFormatException e) {
       System.out.println(e);
       assertEquals("this", "that");
-    } catch (StringIndexOutOfBoundsException e) {
-      System.out.println(e);
-      assertEquals("this", "that");
     }
   }
 }
