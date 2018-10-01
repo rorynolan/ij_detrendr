@@ -13,7 +13,8 @@ class DetrendTest {
   @Test
   void testDetrendingAndBrightness() {
     try {
-      ImagePlus img = new ImagePlus("https://github.com/rorynolan/nandb/raw/master/inst/extdata/50.tif");
+      String nandbImgUrl = "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/nandb/extdata/50.tif";
+      ImagePlus img = new ImagePlus(nandbImgUrl);
       Matrix imgMat = MyImg.convertToMatrix(img);
       double[] frameMeans = MyStats.rowsMeans(imgMat);
       double frameMeansVar = MyStats.var(frameMeans);
@@ -29,6 +30,9 @@ class DetrendTest {
         assertEquals(1.044, detrendedMeanB, 0.002);
       }
     } catch (DataFormatException e) {
+      System.out.println(e);
+      assertEquals("this", "that");
+    } catch (StringIndexOutOfBoundsException e) {
       System.out.println(e);
       assertEquals("this", "that");
     }
