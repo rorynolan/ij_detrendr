@@ -3,6 +3,9 @@
 
 # Detrendr
 
+[![Travis-CI Build
+Status](https://travis-ci.org/rorynolan/nandb.svg?branch=master)](https://travis-ci.org/rorynolan/nandb)
+
 Detrendr is an [ImageJ](https://imagej.net) plugin for detrending images
 with the *Robin Hood* algorithm. This will mainly be of interest to
 those doing fluorescence fluctuation and correlation spectroscopy (FCS
