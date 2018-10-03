@@ -15,18 +15,19 @@ class DetrendTest {
     try {
       String nandbImgUrl = "https://github.com/rorynolan/nandb/raw/master/inst/extdata/50.tif";
       ImagePlus img = new ImagePlus(nandbImgUrl);
-      Matrix imgMat = MyImg.convertToMatrix(img);
-      double[] frameMeans = MyStats.rowsMeans(imgMat);
-      double frameMeansVar = MyStats.var(frameMeans);
-      double origMeanB = MyStats.colsMeanBrightnessB(imgMat);
+      Detrendr detrendr = new Detrendr();
+      Matrix imgMat = detrendr.convertToMatrix(img);
+      double[] frameMeans = detrendr.rowsMeans(imgMat);
+      double frameMeansVar = detrendr.var(frameMeans);
+      double origMeanB = detrendr.colsMeanBrightnessB(imgMat);
       assertEquals(1.045, origMeanB, 0.001);
       for (int seed = 1; seed != 50; ++seed) {
-        ImagePlus detrended = Detrend.detrend(img, seed);
-        Matrix detrendedMat = MyImg.convertToMatrix(detrended);
-        double[] detrendedFrameMeans = MyStats.rowsMeans(detrendedMat);
-        double detrendedFrameMeansVar = MyStats.var(detrendedFrameMeans);
+        ImagePlus detrended = detrendr.detrend(img, seed);
+        Matrix detrendedMat = detrendr.convertToMatrix(detrended);
+        double[] detrendedFrameMeans = detrendr.rowsMeans(detrendedMat);
+        double detrendedFrameMeansVar = detrendr.var(detrendedFrameMeans);
         assertTrue(frameMeansVar >= detrendedFrameMeansVar);
-        double detrendedMeanB = MyStats.colsMeanBrightnessB(detrendedMat);
+        double detrendedMeanB = detrendr.colsMeanBrightnessB(detrendedMat);
         assertEquals(1.044, detrendedMeanB, 0.002);
       }
     } catch (DataFormatException e) {
