@@ -101,7 +101,7 @@ public class Detrendr implements Command {
                       "    - You have no open images, " +
                       "so the operation has failed."
       );
-      LogService.error(e);
+      errorInBestWayPossible(e);
       return;
     }
     ImagePlus img = WindowManager.getCurrentImage();
@@ -118,7 +118,25 @@ public class Detrendr implements Command {
       out.setTitle(insertIntoFileName(title, "detrended"));
       out.show();
     } catch (DataFormatException e) {
+      errorInBestWayPossible(e);
+    }
+  }
+
+  // ImageJ Utilities ---------------------------------------------------------------------------
+
+  void logInBestWayPossible(String s) {
+    if (LogService != null) {  // prevents log attempts in wrong context
+      LogService.info(s);
+    } else {
+      System.out.println(s);
+    }
+  }
+
+  void errorInBestWayPossible(Throwable e) {
+    if (LogService != null) {  // prevents log attempts in wrong context
       LogService.error(e);
+    } else {
+      System.out.println(e);
     }
   }
 
@@ -264,7 +282,7 @@ public class Detrendr implements Command {
     return s[l - 1];
   }
 
-  private String insertIntoFileName(String fileName, String s) {
+  String insertIntoFileName(String fileName, String s) {
     int l = fileName.length();
     if (fileName.equals(".")) {
       return s;
@@ -272,8 +290,8 @@ public class Detrendr implements Command {
     if (fileName.matches(".*\\..*")) {
       if (l > 1 &&
               fileName.substring(0, 1).equals(".") &&
-              (!fileName.substring(1, l).matches("\\."))) {
-        return (fileName + "_" + s);
+              (!fileName.substring(1, l).matches("\\.*"))) {
+        return (fileName.substring(1, l) + "_" + s);
       }
       if (fileName.substring(l - 1, l).equals(".")) {
         return fileName.substring(0, l - 1) + "_" + s;
@@ -290,7 +308,7 @@ public class Detrendr implements Command {
       out.append("_").append(s).append(".").append(last(dotSplit));
       return out.toString();
     }
-    return fileName + s;
+    return fileName + "_" + s;
   }
 
   // --------------------------------------------------------------------------------------------
@@ -447,8 +465,8 @@ public class Detrendr implements Command {
    * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
    */
   ImagePlus stackThresh(ImagePlus oneChImPlus,
-                               String method,
-                               double manualThresh)
+                        String method,
+                        double manualThresh)
           throws DataFormatException {
     oneChImPlus = assertOneChManyFrames(oneChImPlus, "stackThresh");
     int width = oneChImPlus.getDimensions()[0];
@@ -751,11 +769,11 @@ public class Detrendr implements Command {
       if (mostSwaps == maxSwaps) {
         break;
       }
-      if (LogService != null) {  // prevents log attempts in wrong context
-        LogService.info("Trying " + mostSwaps + " swaps . . .");
-      }
+      logInBestWayPossible("Trying " + mostSwaps + " swaps . . .");
     }
+    logInBestWayPossible("Trying " + maxSwaps + " swaps . . .");
     if (colsMeanBrightnessB(mostMat) > 1) {
+      logInBestWayPossible("Settling on " + maxSwaps + " swaps :-)");
       return maxSwaps;
     }
     long middleSwaps = (leastSwaps + mostSwaps) / 2;
@@ -774,9 +792,7 @@ public class Detrendr implements Command {
       } else {
         return middleSwaps;  // this line will probably never be run
       }
-      if (LogService != null) {  // prevents log attempts in wrong context
-        LogService.info("Trying " + middleSwaps + " swaps . . .");
-      }
+      logInBestWayPossible("Trying " + middleSwaps + " swaps . . .");
       middleMat = leastMat.copy();
       performSwaps(middleMat, simMat, middleSwaps - leastSwaps, seed++);
     }
@@ -787,9 +803,7 @@ public class Detrendr implements Command {
       diffs1[i] = absDiff(colsMeanBrightnessB(mats[i]), 1);
     }
     long out = swaps[whichMin(diffs1)];
-    if (LogService != null) {  // prevents log attempts in wrong context
-      LogService.info("Settling on " + out + " swaps :-)");
-    }
+    logInBestWayPossible("Settling on " + out + " swaps :-)");
     return out;
   }
 
@@ -805,27 +819,30 @@ public class Detrendr implements Command {
           throws DataFormatException {
     ImagePlus myImPlus = makeMine(imPlus);
     int nCh = myImPlus.getDimensions()[2];
-    // check for nCh <= 7
+    if (nCh > 7) {
+      throw new DataFormatException(
+              "Can only detrend images of up to 7 channels. \n" +
+                      "  * You have attempted to detrend an image with " + nCh + "channels."
+      );
+    }
     ImagePlus[] channelArr = new ImagePlus[nCh];
     ImagePlus[] outChannelArr = new ImagePlus[nCh];
     for (int i = 0; i != nCh; ++i) {
+      logInBestWayPossible("Detrending channel " + (i + 1) + " . . .");
       channelArr[i] = makeMyOneCh(myImPlus, i + 1);
-      if (LogService != null) {  // prevents log attempts in wrong context
-        LogService.info("Detrending channel " + (i + 1) + " . . .");
-      }
       long nSwaps = calcIdealSwaps(channelArr[i], seed++);
       outChannelArr[i] = performSwaps(channelArr[i], nSwaps, seed++);
-      if (LogService != null) {  // prevents log attempts in wrong context
-        LogService.info("Finished detrending channel " + (i + 1) + ".\n");
-      }
+      logInBestWayPossible("Finished detrending channel " + (i + 1) + " :-)\n");
     }
-    if (LogService != null) {  // prevents log attempts in wrong context
-      LogService.info("Done.");
-    }
+    logInBestWayPossible("Wrapping up . . . \n");
+    ImagePlus out;
     if (outChannelArr.length == 1) {
-      return outChannelArr[0];
+      out = outChannelArr[0];
+    } else {
+      out = RGBStackMerge.mergeChannels(outChannelArr, false);
     }
-    return RGBStackMerge.mergeChannels(outChannelArr, false);
+    logInBestWayPossible("Done :-) \n\n");
+    return out;
   }
 
 }

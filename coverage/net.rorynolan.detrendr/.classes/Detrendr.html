@@ -1,0 +1,931 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Detrendr</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">net.rorynolan.detrendr</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Detrendr (net.rorynolan.detrendr)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Detrendr</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.9%
+  </span>
+  <span class="absValue">
+    (3/ 38)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    5.4%
+  </span>
+  <span class="absValue">
+    (23/ 429)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package net.rorynolan.detrendr;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import Jama.Matrix;
+<i>4</i>&nbsp;import ij.ImagePlus;
+<i>5</i>&nbsp;import ij.ImageStack;
+<i>6</i>&nbsp;import ij.WindowManager;
+<i>7</i>&nbsp;import ij.plugin.ChannelSplitter;
+<i>8</i>&nbsp;import ij.plugin.CompositeConverter;
+<i>9</i>&nbsp;import ij.plugin.RGBStackMerge;
+<i>10</i>&nbsp;import ij.process.AutoThresholder;
+<i>11</i>&nbsp;import ij.process.ImageProcessor;
+<i>12</i>&nbsp;import net.imagej.ImageJ;
+<i>13</i>&nbsp;import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
+<i>14</i>&nbsp;import org.apache.commons.math3.distribution.PoissonDistribution;
+<i>15</i>&nbsp;import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+<i>16</i>&nbsp;import org.scijava.command.Command;
+<i>17</i>&nbsp;import org.scijava.log.LogService;
+<i>18</i>&nbsp;import org.scijava.plugin.Parameter;
+<i>19</i>&nbsp;import org.scijava.plugin.Plugin;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;import java.util.NoSuchElementException;
+<i>22</i>&nbsp;import java.util.stream.IntStream;
+<i>23</i>&nbsp;import java.util.zip.DataFormatException;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;/**
+<i>27</i>&nbsp; * The Detrendr ImageJ plugin class.
+<i>28</i>&nbsp; */
+<i>29</i>&nbsp;@Plugin(type = Command.class, menuPath = &quot;Plugins&gt;Detrendr&quot;)
+<b class="fc"><i>30</i>&nbsp;public class Detrendr implements Command {</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;  /**
+<i>33</i>&nbsp;   * This is just for the developers of the package to test how it&#39;s going.
+<i>34</i>&nbsp;   *
+<i>35</i>&nbsp;   * @param args Should be left blank.
+<i>36</i>&nbsp;   * @throws NoSuchElementException
+<i>37</i>&nbsp;   */
+<i>38</i>&nbsp;  public static void main(String[] args) throws NoSuchElementException {
+<b class="nc"><i>39</i>&nbsp;    Class&lt;?&gt; cls = Detrendr.class;</b>
+<b class="nc"><i>40</i>&nbsp;    String url = cls.getResource(&quot;/&quot; + cls.getName().replace(&#39;.&#39;, &#39;/&#39;) + &quot;.class&quot;).toString();</b>
+<b class="nc"><i>41</i>&nbsp;    int lastIdx = url.lastIndexOf(&#39;/&#39;);</b>
+<b class="nc"><i>42</i>&nbsp;    String pluginsDir = url.substring(5, lastIdx);</b>
+<b class="nc"><i>43</i>&nbsp;    System.out.println(&quot;Plugins directory: &quot; + pluginsDir);</b>
+<b class="nc"><i>44</i>&nbsp;    System.setProperty(&quot;plugins.dir&quot;, pluginsDir);</b>
+<b class="nc"><i>45</i>&nbsp;    final ImageJ ij = net.imagej.Main.launch(args);</b>
+<b class="nc"><i>46</i>&nbsp;  }</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;  @Parameter
+<i>49</i>&nbsp;  private LogService LogService;
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;  @Parameter(
+<i>52</i>&nbsp;          label = &quot;Automatic thresholding method&quot;,
+<i>53</i>&nbsp;          choices = {&quot;None&quot;, &quot;Default&quot;, &quot;Huang&quot;, &quot;Intermodes&quot;,
+<i>54</i>&nbsp;                  &quot;IsoData&quot;, &quot;Li&quot;, &quot;MaxEntropy&quot;, &quot;Mean&quot;, &quot;MinError&quot;,
+<i>55</i>&nbsp;                  &quot;Minimum&quot;, &quot;Moments&quot;, &quot;Otsu&quot;, &quot;Percentile&quot;,
+<i>56</i>&nbsp;                  &quot;RenyiEntropy&quot;, &quot;Shanbhag&quot;, &quot;Triangle&quot;, &quot;Yen&quot;},
+<i>57</i>&nbsp;          description = &quot;Select &#39;None&#39; to forego thresholding. &quot; +
+<i>58</i>&nbsp;                  &quot;To apply thresholding to your image as a preprocessing step, &quot; +
+<i>59</i>&nbsp;                  &quot;select one of the methods. Browse these methods at &quot; +
+<i>60</i>&nbsp;                  &quot;https://imagej.net/Auto_Threshold.&quot;
+<i>61</i>&nbsp;  )
+<i>62</i>&nbsp;  private String autoThreshMethod;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;  @Parameter(
+<i>65</i>&nbsp;          label = &quot;Manual Threshold&quot;, initializer = &quot;myZero&quot;, min = &quot;0&quot;,
+<i>66</i>&nbsp;          description = &quot;Manually threshold your image. &quot; +
+<i>67</i>&nbsp;                  &quot;If this value is greater than zero, it overrides &quot; +
+<i>68</i>&nbsp;                  &quot;automatic thresholding.&quot;,
+<i>69</i>&nbsp;          persist = false
+<i>70</i>&nbsp;  )
+<i>71</i>&nbsp;  private double manualThresh;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;  @Parameter(
+<i>74</i>&nbsp;          label = &quot;Seed&quot;,
+<i>75</i>&nbsp;          description = &quot;Seed for random number generation &quot; +
+<i>76</i>&nbsp;                  &quot;(if you don&#39;t know what this is for, &quot; +
+<i>77</i>&nbsp;                  &quot;leave at 1, 1 is fine).&quot;,
+<i>78</i>&nbsp;          initializer = &quot;myOne&quot;,
+<i>79</i>&nbsp;          min = &quot;1&quot;, max = &quot;9999&quot;
+<i>80</i>&nbsp;  )
+<i>81</i>&nbsp;  private int seed;
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;  private double myZero() {
+<b class="nc"><i>84</i>&nbsp;    return 0;</b>
+<i>85</i>&nbsp;  }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;  private int myOne() {
+<b class="nc"><i>88</i>&nbsp;    return 1;</b>
+<i>89</i>&nbsp;  }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;  /**
+<i>92</i>&nbsp;   * This is the method that is actually called when the plugin is opened in ImageJ.
+<i>93</i>&nbsp;   */
+<i>94</i>&nbsp;  @Override
+<i>95</i>&nbsp;  public void run() {
+<b class="nc"><i>96</i>&nbsp;    int nOpenImgs = WindowManager.getWindowCount();</b>
+<b class="nc"><i>97</i>&nbsp;    if (nOpenImgs == 0) {</b>
+<b class="nc"><i>98</i>&nbsp;      Exception e = new NoSuchElementException(</b>
+<i>99</i>&nbsp;              &quot;\n  * The Detrendr plugin detrends &quot; +
+<i>100</i>&nbsp;                      &quot;the active image. \n&quot; +
+<i>101</i>&nbsp;                      &quot;    - You have no open images, &quot; +
+<i>102</i>&nbsp;                      &quot;so the operation has failed.&quot;
+<i>103</i>&nbsp;      );
+<b class="nc"><i>104</i>&nbsp;      errorInBestWayPossible(e);</b>
+<b class="nc"><i>105</i>&nbsp;      return;</b>
+<i>106</i>&nbsp;    }
+<b class="nc"><i>107</i>&nbsp;    ImagePlus img = WindowManager.getCurrentImage();</b>
+<b class="nc"><i>108</i>&nbsp;    String title = img.getTitle();</b>
+<i>109</i>&nbsp;    try {
+<i>110</i>&nbsp;      ImagePlus preProcessed;
+<i>111</i>&nbsp;      ImagePlus out;
+<b class="nc"><i>112</i>&nbsp;      if (manualThresh &gt; 0 || (!autoThreshMethod.equals(&quot;None&quot;))) {</b>
+<b class="nc"><i>113</i>&nbsp;        preProcessed = stackThresh(img, autoThreshMethod, manualThresh);</b>
+<b class="nc"><i>114</i>&nbsp;        out = detrend(preProcessed, seed);</b>
+<i>115</i>&nbsp;      } else {
+<b class="nc"><i>116</i>&nbsp;        out = detrend(img.duplicate(), seed);</b>
+<i>117</i>&nbsp;      }
+<b class="nc"><i>118</i>&nbsp;      out.setTitle(insertIntoFileName(title, &quot;detrended&quot;));</b>
+<b class="nc"><i>119</i>&nbsp;      out.show();</b>
+<b class="nc"><i>120</i>&nbsp;    } catch (DataFormatException e) {</b>
+<b class="nc"><i>121</i>&nbsp;      errorInBestWayPossible(e);</b>
+<b class="nc"><i>122</i>&nbsp;    }</b>
+<b class="nc"><i>123</i>&nbsp;  }</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;  // ImageJ Utilities ---------------------------------------------------------------------------
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;  void logInBestWayPossible(String s) {
+<b class="nc"><i>128</i>&nbsp;    if (LogService != null) {  // prevents log attempts in wrong context</b>
+<b class="nc"><i>129</i>&nbsp;      LogService.info(s);</b>
+<i>130</i>&nbsp;    } else {
+<b class="nc"><i>131</i>&nbsp;      System.out.println(s);</b>
+<i>132</i>&nbsp;    }
+<b class="nc"><i>133</i>&nbsp;  }</b>
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;  void errorInBestWayPossible(Throwable e) {
+<b class="nc"><i>136</i>&nbsp;    if (LogService != null) {  // prevents log attempts in wrong context</b>
+<b class="nc"><i>137</i>&nbsp;      LogService.error(e);</b>
+<i>138</i>&nbsp;    } else {
+<b class="nc"><i>139</i>&nbsp;      System.out.println(e);</b>
+<i>140</i>&nbsp;    }
+<b class="nc"><i>141</i>&nbsp;  }</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;  // Image Manipulation -------------------------------------------------------------------------
+<i>144</i>&nbsp;
+<i>145</i>&nbsp;  private ImagePlus makeMine(ImagePlus imPlus)
+<i>146</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>147</i>&nbsp;    int[] dim = imPlus.getDimensions();</b>
+<b class="nc"><i>148</i>&nbsp;    if (dim[3] &gt; 1 &amp;&amp; dim[4] &gt; 1) {</b>
+<b class="nc"><i>149</i>&nbsp;      DataFormatException e = new DataFormatException(</b>
+<i>150</i>&nbsp;              &quot;Your image has volume (z) and time (frame) axes, &quot; +
+<i>151</i>&nbsp;                      &quot;i.e. it has both slices and frames. &quot; +
+<i>152</i>&nbsp;                      &quot;detrendr is made to deal with one or the other, &quot; +
+<i>153</i>&nbsp;                      &quot;but it can&#39;t deal with both.&quot;);
+<b class="nc"><i>154</i>&nbsp;      throw e;</b>
+<i>155</i>&nbsp;    }
+<b class="nc"><i>156</i>&nbsp;    if (dim[3] == 1 &amp;&amp; dim[4] == 1) {</b>
+<b class="nc"><i>157</i>&nbsp;      DataFormatException e = new DataFormatException(</b>
+<i>158</i>&nbsp;              &quot;Your image only has one frame. To be detrendable, &quot; +
+<i>159</i>&nbsp;                      &quot;an image must have more than one frame.&quot;
+<i>160</i>&nbsp;      );
+<b class="nc"><i>161</i>&nbsp;      throw e;</b>
+<i>162</i>&nbsp;    }
+<i>163</i>&nbsp;    ImagePlus out;
+<b class="nc"><i>164</i>&nbsp;    if (imPlus.getType() == ImagePlus.COLOR_RGB) {</b>
+<b class="nc"><i>165</i>&nbsp;      out = CompositeConverter.makeComposite(imPlus);</b>
+<b class="nc"><i>166</i>&nbsp;      dim = out.getDimensions();</b>
+<i>167</i>&nbsp;    } else {
+<b class="nc"><i>168</i>&nbsp;      out = imPlus;</b>
+<i>169</i>&nbsp;    }
+<b class="nc"><i>170</i>&nbsp;    out.setDimensions(dim[2], Math.max(dim[3], dim[4]), Math.min(dim[3], dim[4]));</b>
+<b class="nc"><i>171</i>&nbsp;    return out;</b>
+<i>172</i>&nbsp;  }
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;  private ImagePlus makeMyOneCh(ImagePlus imPlus,
+<i>175</i>&nbsp;                                int channel)
+<i>176</i>&nbsp;          throws IllegalArgumentException {  // channel is 1-based
+<b class="nc"><i>177</i>&nbsp;    if (channel &lt; 1) {</b>
+<b class="nc"><i>178</i>&nbsp;      IllegalArgumentException e = new IllegalArgumentException(</b>
+<i>179</i>&nbsp;              &quot;\n  * The channel number must be greater than or equal to 1.&quot;
+<i>180</i>&nbsp;      );
+<b class="nc"><i>181</i>&nbsp;      throw e;</b>
+<i>182</i>&nbsp;    }
+<b class="nc"><i>183</i>&nbsp;    ImagePlus[] channelArr = ChannelSplitter.split(imPlus);</b>
+<b class="nc"><i>184</i>&nbsp;    int nCh = imPlus.getDimensions()[2];</b>
+<b class="nc"><i>185</i>&nbsp;    if (channel &gt; nCh) {</b>
+<b class="nc"><i>186</i>&nbsp;      IllegalArgumentException e = new IllegalArgumentException(</b>
+<i>187</i>&nbsp;              &quot;\n  * You have requested channel &quot; + channel +
+<i>188</i>&nbsp;                      &quot; of the image, but the image has only &quot; +
+<i>189</i>&nbsp;                      nCh + &quot;channels in total.&quot;
+<i>190</i>&nbsp;      );
+<b class="nc"><i>191</i>&nbsp;      throw e;</b>
+<i>192</i>&nbsp;    }
+<b class="nc"><i>193</i>&nbsp;    return channelArr[channel - 1];</b>
+<i>194</i>&nbsp;  }
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;  ImagePlus assertOneChManyFrames(ImagePlus imPlus, String currentFun)
+<i>197</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>198</i>&nbsp;    int nCh = imPlus.getDimensions()[2];</b>
+<b class="nc"><i>199</i>&nbsp;    if (nCh != 1) {</b>
+<b class="nc"><i>200</i>&nbsp;      throw new IllegalArgumentException(&quot;The function &quot; + currentFun +</b>
+<i>201</i>&nbsp;              &quot;() expects an ImagePlus with one channel.\n&quot; +
+<i>202</i>&nbsp;              &quot;  * You have passed an ImagePlus with &quot; + nCh + &quot;channels.&quot;);
+<i>203</i>&nbsp;    }
+<b class="nc"><i>204</i>&nbsp;    return makeMine(imPlus);</b>
+<i>205</i>&nbsp;  }
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;  Matrix convertToMatrix(ImagePlus oneChImgPlus)
+<i>208</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>209</i>&nbsp;    oneChImgPlus = assertOneChManyFrames(oneChImgPlus, &quot;convertToMatrix&quot;);</b>
+<b class="nc"><i>210</i>&nbsp;    int[] imDim = oneChImgPlus.getDimensions();</b>
+<b class="nc"><i>211</i>&nbsp;    Matrix out = new Matrix(imDim[3], imDim[0] * imDim[1]);</b>
+<b class="nc"><i>212</i>&nbsp;    for (int slice = 0; slice != imDim[3]; ++slice) {</b>
+<b class="nc"><i>213</i>&nbsp;      oneChImgPlus.setSlice(slice);</b>
+<b class="nc"><i>214</i>&nbsp;      ImageProcessor ip = oneChImgPlus.getProcessor();</b>
+<b class="nc"><i>215</i>&nbsp;      for (int x = 0; x != imDim[0]; ++x) {</b>
+<b class="nc"><i>216</i>&nbsp;        for (int y = 0; y != imDim[1]; ++y) {</b>
+<b class="nc"><i>217</i>&nbsp;          out.set(slice, x + y * imDim[0], ip.get(x, y));</b>
+<i>218</i>&nbsp;        }
+<i>219</i>&nbsp;      }
+<i>220</i>&nbsp;    }
+<b class="nc"><i>221</i>&nbsp;    return out;</b>
+<i>222</i>&nbsp;  }
+<i>223</i>&nbsp;
+<i>224</i>&nbsp;  ImagePlus convertToImagePlus(Matrix mat, int width)
+<i>225</i>&nbsp;          throws IllegalArgumentException {
+<b class="nc"><i>226</i>&nbsp;    int matNCol = mat.getColumnDimension(), matNRow = mat.getRowDimension();</b>
+<b class="nc"><i>227</i>&nbsp;    if (width &lt; 1) {</b>
+<b class="nc"><i>228</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>229</i>&nbsp;              &quot;width must be positive.\n&quot; +
+<i>230</i>&nbsp;                      &quot;  * You have specified a width of &quot; + width + &quot;.&quot;
+<i>231</i>&nbsp;      );
+<i>232</i>&nbsp;    }
+<b class="nc"><i>233</i>&nbsp;    if ((matNCol % width) != 0) {</b>
+<b class="nc"><i>234</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>235</i>&nbsp;              &quot;width must divide evenly into the number of columns in mat. \n&quot; +
+<i>236</i>&nbsp;                      &quot;  * Your mat has &quot; + matNCol + &quot; columns and your width is &quot; +
+<i>237</i>&nbsp;                      width + &quot;.&quot;
+<i>238</i>&nbsp;      );
+<i>239</i>&nbsp;    }
+<b class="nc"><i>240</i>&nbsp;    int height = matNCol / width;</b>
+<b class="nc"><i>241</i>&nbsp;    ImageStack imStack = ImageStack.create(width, height, matNRow, 16);</b>
+<b class="nc"><i>242</i>&nbsp;    for (int slice = 0; slice != matNRow; ++slice) {</b>
+<b class="nc"><i>243</i>&nbsp;      for (int x = 0; x != width; ++x) {</b>
+<b class="nc"><i>244</i>&nbsp;        for (int y = 0; y != height; ++y) {</b>
+<b class="nc"><i>245</i>&nbsp;          imStack.setVoxel(x, y, slice, mat.get(slice, x + y * width));</b>
+<i>246</i>&nbsp;        }
+<i>247</i>&nbsp;      }
+<i>248</i>&nbsp;    }
+<b class="nc"><i>249</i>&nbsp;    return new ImagePlus(&quot;created_from_jama_matrix&quot;, imStack);</b>
+<i>250</i>&nbsp;  }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;  // Matrix Manipulation ------------------------------------------------------------------------
+<i>255</i>&nbsp;
+<i>256</i>&nbsp;  private double[] getRow(Matrix mat, int row) {
+<i>257</i>&nbsp;    // include a check on value of row if get time
+<b class="nc"><i>258</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>259</i>&nbsp;    double[] out = new double[nCol];</b>
+<b class="nc"><i>260</i>&nbsp;    for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>261</i>&nbsp;      out[col] = mat.get(row, col);</b>
+<i>262</i>&nbsp;    }
+<b class="nc"><i>263</i>&nbsp;    return out;</b>
+<i>264</i>&nbsp;  }
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;  private double[] getCol(Matrix mat, int col) {
+<i>267</i>&nbsp;    // include a check on value of col if get time
+<b class="nc"><i>268</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>269</i>&nbsp;    double[] out = new double[nRow];</b>
+<b class="nc"><i>270</i>&nbsp;    for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>271</i>&nbsp;      out[row] = mat.get(row, col);</b>
+<i>272</i>&nbsp;    }
+<b class="nc"><i>273</i>&nbsp;    return out;</b>
+<i>274</i>&nbsp;  }
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>277</i>&nbsp;
+<i>278</i>&nbsp;  // String Manipulation
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;  private String last(String[] s) {
+<b class="fc"><i>281</i>&nbsp;    int l = s.length;</b>
+<b class="fc"><i>282</i>&nbsp;    return s[l - 1];</b>
+<i>283</i>&nbsp;  }
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;  String insertIntoFileName(String fileName, String s) {
+<b class="fc"><i>286</i>&nbsp;    int l = fileName.length();</b>
+<b class="fc"><i>287</i>&nbsp;    if (fileName.equals(&quot;.&quot;)) {</b>
+<b class="fc"><i>288</i>&nbsp;      return s;</b>
+<i>289</i>&nbsp;    }
+<b class="fc"><i>290</i>&nbsp;    if (fileName.matches(&quot;.*\\..*&quot;)) {</b>
+<b class="fc"><i>291</i>&nbsp;      if (l &gt; 1 &amp;&amp;</b>
+<b class="fc"><i>292</i>&nbsp;              fileName.substring(0, 1).equals(&quot;.&quot;) &amp;&amp;</b>
+<b class="fc"><i>293</i>&nbsp;              (!fileName.substring(1, l).matches(&quot;\\.*&quot;))) {</b>
+<b class="fc"><i>294</i>&nbsp;        return (fileName.substring(1, l) + &quot;_&quot; + s);</b>
+<i>295</i>&nbsp;      }
+<b class="fc"><i>296</i>&nbsp;      if (fileName.substring(l - 1, l).equals(&quot;.&quot;)) {</b>
+<b class="fc"><i>297</i>&nbsp;        return fileName.substring(0, l - 1) + &quot;_&quot; + s;</b>
+<i>298</i>&nbsp;      }
+<b class="fc"><i>299</i>&nbsp;      String[] dotSplit = fileName.split(&quot;\\.&quot;);</b>
+<b class="fc"><i>300</i>&nbsp;      StringBuilder out = new StringBuilder();</b>
+<b class="fc"><i>301</i>&nbsp;      int dsl = dotSplit.length;</b>
+<b class="fc"><i>302</i>&nbsp;      for (int i = 0; i != dsl - 1; ++i) {</b>
+<b class="fc"><i>303</i>&nbsp;        out.append(dotSplit[i]);</b>
+<b class="fc"><i>304</i>&nbsp;        if (i != dsl - 2) {</b>
+<b class="fc"><i>305</i>&nbsp;          out.append(&quot;.&quot;);</b>
+<i>306</i>&nbsp;        }
+<i>307</i>&nbsp;      }
+<b class="fc"><i>308</i>&nbsp;      out.append(&quot;_&quot;).append(s).append(&quot;.&quot;).append(last(dotSplit));</b>
+<b class="fc"><i>309</i>&nbsp;      return out.toString();</b>
+<i>310</i>&nbsp;    }
+<b class="fc"><i>311</i>&nbsp;    return fileName + &quot;_&quot; + s;</b>
+<i>312</i>&nbsp;  }
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>315</i>&nbsp;
+<i>316</i>&nbsp;  // Summary Statistics -------------------------------------------------------------------------
+<i>317</i>&nbsp;
+<i>318</i>&nbsp;  private double sum(double[] data) {
+<b class="nc"><i>319</i>&nbsp;    double sum = 0.0;</b>
+<b class="nc"><i>320</i>&nbsp;    for (double a : data)</b>
+<b class="nc"><i>321</i>&nbsp;      sum += a;</b>
+<b class="nc"><i>322</i>&nbsp;    return sum;</b>
+<i>323</i>&nbsp;  }
+<i>324</i>&nbsp;
+<i>325</i>&nbsp;  double mean(double[] data) {
+<b class="nc"><i>326</i>&nbsp;    return sum(data) / data.length;</b>
+<i>327</i>&nbsp;  }
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;  double var(double[] data) {
+<b class="nc"><i>330</i>&nbsp;    double mean = mean(data);</b>
+<b class="nc"><i>331</i>&nbsp;    double temp = 0;</b>
+<b class="nc"><i>332</i>&nbsp;    for (double a : data)</b>
+<b class="nc"><i>333</i>&nbsp;      temp += (a - mean) * (a - mean);</b>
+<b class="nc"><i>334</i>&nbsp;    return temp / (data.length - 1);</b>
+<i>335</i>&nbsp;  }
+<i>336</i>&nbsp;
+<i>337</i>&nbsp;  private double brightnessB(SummaryStatistics sumStat) {
+<b class="nc"><i>338</i>&nbsp;    return sumStat.getVariance() / sumStat.getMean();</b>
+<i>339</i>&nbsp;  }
+<i>340</i>&nbsp;
+<i>341</i>&nbsp;  private double[] colsBrightnessB(Matrix mat) {
+<b class="nc"><i>342</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>343</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>344</i>&nbsp;    double[] out = new double[nCol];</b>
+<b class="nc"><i>345</i>&nbsp;    SummaryStatistics sumStat = new SummaryStatistics();</b>
+<b class="nc"><i>346</i>&nbsp;    for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>347</i>&nbsp;      for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>348</i>&nbsp;        sumStat.addValue(mat.get(row, col));</b>
+<i>349</i>&nbsp;      }
+<b class="nc"><i>350</i>&nbsp;      out[col] = brightnessB(sumStat);</b>
+<b class="nc"><i>351</i>&nbsp;      sumStat.clear();</b>
+<i>352</i>&nbsp;    }
+<b class="nc"><i>353</i>&nbsp;    return out;</b>
+<i>354</i>&nbsp;  }
+<i>355</i>&nbsp;
+<i>356</i>&nbsp;  double colsMeanBrightnessB(Matrix mat) {
+<b class="nc"><i>357</i>&nbsp;    double[] cBB = colsBrightnessB(mat);</b>
+<b class="nc"><i>358</i>&nbsp;    SummaryStatistics sumStat = new SummaryStatistics();</b>
+<b class="nc"><i>359</i>&nbsp;    for (int col = 0; col != cBB.length; ++col) {</b>
+<b class="nc"><i>360</i>&nbsp;      if (!Double.isNaN(cBB[col])) {</b>
+<b class="nc"><i>361</i>&nbsp;        sumStat.addValue(cBB[col]);</b>
+<i>362</i>&nbsp;      }
+<i>363</i>&nbsp;    }
+<b class="nc"><i>364</i>&nbsp;    long sumStatN = sumStat.getN();</b>
+<b class="nc"><i>365</i>&nbsp;    if (sumStatN == 0) {</b>
+<b class="nc"><i>366</i>&nbsp;      return Double.NaN;</b>
+<i>367</i>&nbsp;    } else {
+<b class="nc"><i>368</i>&nbsp;      return sumStat.getMean();</b>
+<i>369</i>&nbsp;    }
+<i>370</i>&nbsp;  }
+<i>371</i>&nbsp;
+<i>372</i>&nbsp;  private double[] rowsSums(Matrix mat) {
+<b class="nc"><i>373</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>374</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>375</i>&nbsp;    double[] out = new double[nRow];</b>
+<b class="nc"><i>376</i>&nbsp;    SummaryStatistics sumStat = new SummaryStatistics();</b>
+<b class="nc"><i>377</i>&nbsp;    for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>378</i>&nbsp;      for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>379</i>&nbsp;        sumStat.addValue(mat.get(row, col));</b>
+<i>380</i>&nbsp;      }
+<b class="nc"><i>381</i>&nbsp;      out[row] = sumStat.getSum();</b>
+<b class="nc"><i>382</i>&nbsp;      sumStat.clear();</b>
+<i>383</i>&nbsp;    }
+<b class="nc"><i>384</i>&nbsp;    return out;</b>
+<i>385</i>&nbsp;  }
+<i>386</i>&nbsp;
+<i>387</i>&nbsp;  private double[] colsSums(Matrix mat) {
+<b class="nc"><i>388</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>389</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>390</i>&nbsp;    double[] out = new double[nCol];</b>
+<b class="nc"><i>391</i>&nbsp;    SummaryStatistics sumStat = new SummaryStatistics();</b>
+<b class="nc"><i>392</i>&nbsp;    for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>393</i>&nbsp;      for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>394</i>&nbsp;        sumStat.addValue(mat.get(row, col));</b>
+<i>395</i>&nbsp;      }
+<b class="nc"><i>396</i>&nbsp;      out[col] = sumStat.getSum();</b>
+<b class="nc"><i>397</i>&nbsp;      sumStat.clear();</b>
+<i>398</i>&nbsp;    }
+<b class="nc"><i>399</i>&nbsp;    return out;</b>
+<i>400</i>&nbsp;  }
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;  double[] rowsMeans(Matrix mat) {
+<b class="nc"><i>403</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>404</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>405</i>&nbsp;    double[] out = rowsSums(mat);</b>
+<b class="nc"><i>406</i>&nbsp;    for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>407</i>&nbsp;      out[row] /= nCol;</b>
+<i>408</i>&nbsp;    }
+<b class="nc"><i>409</i>&nbsp;    return out;</b>
+<i>410</i>&nbsp;  }
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;  double[] colsMeans(Matrix mat) {
+<b class="nc"><i>413</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>414</i>&nbsp;    int nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>415</i>&nbsp;    double[] out = colsSums(mat);</b>
+<b class="nc"><i>416</i>&nbsp;    for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>417</i>&nbsp;      out[col] /= nRow;</b>
+<i>418</i>&nbsp;    }
+<b class="nc"><i>419</i>&nbsp;    return out;</b>
+<i>420</i>&nbsp;  }
+<i>421</i>&nbsp;
+<i>422</i>&nbsp;  private boolean allAreNum(double[] data, double num) {
+<b class="nc"><i>423</i>&nbsp;    for (double d : data) {</b>
+<b class="nc"><i>424</i>&nbsp;      if (d != num) {</b>
+<b class="nc"><i>425</i>&nbsp;        return false;</b>
+<i>426</i>&nbsp;      }
+<i>427</i>&nbsp;    }
+<b class="nc"><i>428</i>&nbsp;    return true;</b>
+<i>429</i>&nbsp;  }
+<i>430</i>&nbsp;
+<i>431</i>&nbsp;  private double absDiff(double x, double y) {
+<b class="nc"><i>432</i>&nbsp;    return Math.abs(x - y);</b>
+<i>433</i>&nbsp;  }
+<i>434</i>&nbsp;
+<i>435</i>&nbsp;  private int whichMin(double[] x) {
+<b class="nc"><i>436</i>&nbsp;    int minIndex = 0;</b>
+<b class="nc"><i>437</i>&nbsp;    double min = x[minIndex];</b>
+<b class="nc"><i>438</i>&nbsp;    int l = x.length;</b>
+<b class="nc"><i>439</i>&nbsp;    for (int i = 0; i != l; ++i) {</b>
+<b class="nc"><i>440</i>&nbsp;      if (x[i] &lt; min) {</b>
+<b class="nc"><i>441</i>&nbsp;        minIndex = i;</b>
+<b class="nc"><i>442</i>&nbsp;        min = x[minIndex];</b>
+<i>443</i>&nbsp;      }
+<i>444</i>&nbsp;    }
+<b class="nc"><i>445</i>&nbsp;    return minIndex;</b>
+<i>446</i>&nbsp;  }
+<i>447</i>&nbsp;
+<i>448</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>449</i>&nbsp;
+<i>450</i>&nbsp;  // Thresholding -------------------------------------------------------------------------------
+<i>451</i>&nbsp;
+<i>452</i>&nbsp;  /**
+<i>453</i>&nbsp;   * Threshold a stack based on the mean intensity profile. For a given xy pixel position in the stack, either all of
+<i>454</i>&nbsp;   * the pixels in all of the frames at that position are thresholded away to zero or none are.
+<i>455</i>&nbsp;   *
+<i>456</i>&nbsp;   * @param oneChImPlus  A one channel, multi-frame ImagePlus.
+<i>457</i>&nbsp;   * @param method       For choosing the threshold automatically. Must be one of &quot;Default&quot;, &quot;Huang&quot;, &quot;Intermodes&quot;, &quot;IsoData&quot;,
+<i>458</i>&nbsp;   *                     &quot;Li&quot;, &quot;MaxEntropy&quot;, &quot;Mean&quot;, &quot;MinError&quot;,&quot;Minimum&quot;, &quot;Moments&quot;, &quot;Otsu&quot;, &quot;Percentile&quot;, &quot;RenyiEntropy&quot;,
+<i>459</i>&nbsp;   *                     &quot;Shanbhag&quot;, &quot;Triangle&quot;, or &quot;Yen&quot;.
+<i>460</i>&nbsp;   * @param manualThresh A positive number. Pixels with a mean intensity of less than manualThresh will be thresholded
+<i>461</i>&nbsp;   *                     away to zero. If manualThresh is set (greater than zero), it overrides method, i.e. it does not
+<i>462</i>&nbsp;   *                     matter what method is set to. To be clear, if you want to use manualThresh, set
+<i>463</i>&nbsp;   *                     method = &quot;None&quot;.
+<i>464</i>&nbsp;   * @return The stack-thresholded image.
+<i>465</i>&nbsp;   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+<i>466</i>&nbsp;   */
+<i>467</i>&nbsp;  ImagePlus stackThresh(ImagePlus oneChImPlus,
+<i>468</i>&nbsp;                        String method,
+<i>469</i>&nbsp;                        double manualThresh)
+<i>470</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>471</i>&nbsp;    oneChImPlus = assertOneChManyFrames(oneChImPlus, &quot;stackThresh&quot;);</b>
+<b class="nc"><i>472</i>&nbsp;    int width = oneChImPlus.getDimensions()[0];</b>
+<b class="nc"><i>473</i>&nbsp;    Matrix mat = convertToMatrix(oneChImPlus);</b>
+<b class="nc"><i>474</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>475</i>&nbsp;    if (manualThresh &gt; 0) {</b>
+<b class="nc"><i>476</i>&nbsp;      double[] colMeans = colsMeans(mat);</b>
+<b class="nc"><i>477</i>&nbsp;      for (int i = 0; i != colMeans.length; ++i) {</b>
+<b class="nc"><i>478</i>&nbsp;        if (colMeans[i] &lt; manualThresh) {</b>
+<b class="nc"><i>479</i>&nbsp;          for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>480</i>&nbsp;            mat.set(row, i, 0);</b>
+<i>481</i>&nbsp;          }
+<i>482</i>&nbsp;        }
+<i>483</i>&nbsp;      }
+<b class="nc"><i>484</i>&nbsp;      return convertToImagePlus(mat, width);</b>
+<i>485</i>&nbsp;    }
+<b class="nc"><i>486</i>&nbsp;    double[] colSums = colsSums(mat);</b>
+<b class="nc"><i>487</i>&nbsp;    int nCol = colSums.length;</b>
+<b class="nc"><i>488</i>&nbsp;    SummaryStatistics sumStat = new SummaryStatistics();</b>
+<b class="nc"><i>489</i>&nbsp;    for (int i = 0; i != nCol; ++i) {</b>
+<b class="nc"><i>490</i>&nbsp;      sumStat.addValue(colSums[i]);</b>
+<i>491</i>&nbsp;    }
+<b class="nc"><i>492</i>&nbsp;    int min = (int) sumStat.getMin();</b>
+<b class="nc"><i>493</i>&nbsp;    int max = (int) sumStat.getMax();</b>
+<b class="nc"><i>494</i>&nbsp;    int prelimHistLength = max - min + 1;</b>
+<b class="nc"><i>495</i>&nbsp;    int histLength = (int) Math.pow(2, 8);</b>
+<b class="nc"><i>496</i>&nbsp;    int[] hist = new int[histLength];</b>
+<b class="nc"><i>497</i>&nbsp;    double adjustFactor = 1;</b>
+<b class="nc"><i>498</i>&nbsp;    if (prelimHistLength &gt; histLength) {</b>
+<b class="nc"><i>499</i>&nbsp;      adjustFactor = (double) histLength / prelimHistLength;</b>
+<b class="nc"><i>500</i>&nbsp;      for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>501</i>&nbsp;        int index = (int) (colSums[col] * adjustFactor);</b>
+<b class="nc"><i>502</i>&nbsp;        ++hist[index - min];</b>
+<i>503</i>&nbsp;      }
+<i>504</i>&nbsp;    } else {
+<b class="nc"><i>505</i>&nbsp;      for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>506</i>&nbsp;        ++hist[(int) colSums[col] - min];</b>
+<i>507</i>&nbsp;      }
+<i>508</i>&nbsp;    }
+<b class="nc"><i>509</i>&nbsp;    AutoThresholder autoT = new AutoThresholder();</b>
+<b class="nc"><i>510</i>&nbsp;    double thresh = -1;</b>
+<b class="nc"><i>511</i>&nbsp;    switch (method) {</b>
+<i>512</i>&nbsp;      case &quot;Default&quot;:
+<b class="nc"><i>513</i>&nbsp;        thresh = autoT.getThreshold(&quot;Default&quot;, hist);</b>
+<b class="nc"><i>514</i>&nbsp;        break;</b>
+<i>515</i>&nbsp;      case &quot;Huang&quot;:
+<b class="nc"><i>516</i>&nbsp;        thresh = autoT.getThreshold(&quot;Huang&quot;, hist);</b>
+<b class="nc"><i>517</i>&nbsp;        break;</b>
+<i>518</i>&nbsp;      case &quot;Intermodes&quot;:
+<b class="nc"><i>519</i>&nbsp;        thresh = autoT.getThreshold(&quot;Intermodes&quot;, hist);</b>
+<b class="nc"><i>520</i>&nbsp;        break;</b>
+<i>521</i>&nbsp;      case &quot;IsoData&quot;:
+<b class="nc"><i>522</i>&nbsp;        thresh = autoT.getThreshold(&quot;IJ_IsoData&quot;, hist);</b>
+<b class="nc"><i>523</i>&nbsp;        break;</b>
+<i>524</i>&nbsp;      case &quot;Li&quot;:
+<b class="nc"><i>525</i>&nbsp;        thresh = autoT.getThreshold(&quot;Li&quot;, hist);</b>
+<b class="nc"><i>526</i>&nbsp;        break;</b>
+<i>527</i>&nbsp;      case &quot;MaxEntropy&quot;:
+<b class="nc"><i>528</i>&nbsp;        thresh = autoT.getThreshold(&quot;MaxEntropy&quot;, hist);</b>
+<b class="nc"><i>529</i>&nbsp;        break;</b>
+<i>530</i>&nbsp;      case &quot;Mean&quot;:
+<b class="nc"><i>531</i>&nbsp;        thresh = autoT.getThreshold(&quot;Mean&quot;, hist);</b>
+<b class="nc"><i>532</i>&nbsp;        break;</b>
+<i>533</i>&nbsp;      case &quot;MinError&quot;:
+<b class="nc"><i>534</i>&nbsp;        thresh = autoT.getThreshold(&quot;MinError&quot;, hist);</b>
+<b class="nc"><i>535</i>&nbsp;        break;</b>
+<i>536</i>&nbsp;      case &quot;Minimum&quot;:
+<b class="nc"><i>537</i>&nbsp;        thresh = autoT.getThreshold(&quot;Minimum&quot;, hist);</b>
+<b class="nc"><i>538</i>&nbsp;        break;</b>
+<i>539</i>&nbsp;      case &quot;Moments&quot;:
+<b class="nc"><i>540</i>&nbsp;        thresh = autoT.getThreshold(&quot;Moments&quot;, hist);</b>
+<b class="nc"><i>541</i>&nbsp;        break;</b>
+<i>542</i>&nbsp;      case &quot;Otsu&quot;:
+<b class="nc"><i>543</i>&nbsp;        thresh = autoT.getThreshold(&quot;Otsu&quot;, hist);</b>
+<b class="nc"><i>544</i>&nbsp;        break;</b>
+<i>545</i>&nbsp;      case &quot;Percentile&quot;:
+<b class="nc"><i>546</i>&nbsp;        thresh = autoT.getThreshold(&quot;Percentile&quot;, hist);</b>
+<b class="nc"><i>547</i>&nbsp;        break;</b>
+<i>548</i>&nbsp;      case &quot;RenyiEntropy&quot;:
+<b class="nc"><i>549</i>&nbsp;        thresh = autoT.getThreshold(&quot;RenyiEntropy&quot;, hist);</b>
+<b class="nc"><i>550</i>&nbsp;        break;</b>
+<i>551</i>&nbsp;      case &quot;Shanbhag&quot;:
+<b class="nc"><i>552</i>&nbsp;        thresh = autoT.getThreshold(&quot;Shanbhag&quot;, hist);</b>
+<b class="nc"><i>553</i>&nbsp;        break;</b>
+<i>554</i>&nbsp;      case &quot;Triangle&quot;:
+<b class="nc"><i>555</i>&nbsp;        thresh = autoT.getThreshold(&quot;Triangle&quot;, hist);</b>
+<b class="nc"><i>556</i>&nbsp;        break;</b>
+<i>557</i>&nbsp;      case &quot;Yen&quot;:
+<b class="nc"><i>558</i>&nbsp;        thresh = autoT.getThreshold(&quot;Yen&quot;, hist);</b>
+<i>559</i>&nbsp;        break;
+<i>560</i>&nbsp;    }
+<b class="nc"><i>561</i>&nbsp;    if (thresh &lt; 0) {</b>
+<b class="nc"><i>562</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>563</i>&nbsp;              &quot;Threshold was calculated to be less than zero. &quot; +
+<i>564</i>&nbsp;                      &quot;This is an unexpected error and should never happen.&quot;);
+<i>565</i>&nbsp;    }
+<b class="nc"><i>566</i>&nbsp;    if (adjustFactor != 1) {</b>
+<b class="nc"><i>567</i>&nbsp;      thresh /= adjustFactor;</b>
+<i>568</i>&nbsp;    }
+<b class="nc"><i>569</i>&nbsp;    thresh += min;</b>
+<b class="nc"><i>570</i>&nbsp;    for (int i = 0; i != colSums.length; ++i) {</b>
+<b class="nc"><i>571</i>&nbsp;      if (colSums[i] &lt; thresh) {</b>
+<b class="nc"><i>572</i>&nbsp;        for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>573</i>&nbsp;          mat.set(row, i, 0);</b>
+<i>574</i>&nbsp;        }
+<i>575</i>&nbsp;      }
+<i>576</i>&nbsp;    }
+<b class="nc"><i>577</i>&nbsp;    return convertToImagePlus(mat, width);</b>
+<i>578</i>&nbsp;  }
+<i>579</i>&nbsp;
+<i>580</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>581</i>&nbsp;
+<i>582</i>&nbsp;  // Simulation ---------------------------------------------------------------------------------
+<i>583</i>&nbsp;
+<i>584</i>&nbsp;  private Matrix poisMat(int nPx, double[] frameMeans,
+<i>585</i>&nbsp;                         int seed) {
+<b class="nc"><i>586</i>&nbsp;    int nFrames = frameMeans.length;</b>
+<b class="nc"><i>587</i>&nbsp;    Matrix out = new Matrix(nFrames, nPx);</b>
+<b class="nc"><i>588</i>&nbsp;    for (int frame = 0; frame != nFrames; ++frame) {</b>
+<b class="nc"><i>589</i>&nbsp;      PoissonDistribution pd = new PoissonDistribution(frameMeans[frame]);</b>
+<b class="nc"><i>590</i>&nbsp;      pd.reseedRandomGenerator(seed++);</b>
+<b class="nc"><i>591</i>&nbsp;      for (int px = 0; px != nPx; ++px) {</b>
+<b class="nc"><i>592</i>&nbsp;        out.set(frame, px, pd.sample());</b>
+<i>593</i>&nbsp;      }
+<i>594</i>&nbsp;    }
+<b class="nc"><i>595</i>&nbsp;    return out;</b>
+<i>596</i>&nbsp;  }
+<i>597</i>&nbsp;
+<i>598</i>&nbsp;  private Matrix simMat(ImagePlus oneChImPlus, int seed)
+<i>599</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>600</i>&nbsp;    oneChImPlus = assertOneChManyFrames(oneChImPlus, &quot;simMat&quot;);</b>
+<b class="nc"><i>601</i>&nbsp;    Matrix oneChMat = convertToMatrix(oneChImPlus);</b>
+<b class="nc"><i>602</i>&nbsp;    int oneChMatNCol = oneChMat.getColumnDimension();</b>
+<b class="nc"><i>603</i>&nbsp;    int oneChMatNRow = oneChMat.getRowDimension();</b>
+<b class="nc"><i>604</i>&nbsp;    int nNonZeroCols = 0;</b>
+<b class="nc"><i>605</i>&nbsp;    for (int col = 0; col != oneChMatNCol; ++col) {</b>
+<b class="nc"><i>606</i>&nbsp;      if (!allAreNum(getCol(oneChMat, col), 0)) {</b>
+<b class="nc"><i>607</i>&nbsp;        ++nNonZeroCols;</b>
+<i>608</i>&nbsp;      }
+<i>609</i>&nbsp;    }
+<b class="nc"><i>610</i>&nbsp;    double[] frameMeans = rowsSums(oneChMat);</b>
+<b class="nc"><i>611</i>&nbsp;    for (int frame = 0; frame != oneChMatNRow; ++frame) {</b>
+<b class="nc"><i>612</i>&nbsp;      frameMeans[frame] /= nNonZeroCols;</b>
+<i>613</i>&nbsp;    }
+<b class="nc"><i>614</i>&nbsp;    return poisMat(nNonZeroCols, frameMeans, seed);</b>
+<i>615</i>&nbsp;  }
+<i>616</i>&nbsp;
+<i>617</i>&nbsp;  // --------------------------------------------------------------------------------------------
+<i>618</i>&nbsp;
+<i>619</i>&nbsp;  // Detrending ---------------------------------------------------------------------------------
+<i>620</i>&nbsp;
+<i>621</i>&nbsp;  private long getMaxSwaps(Matrix mat) {
+<b class="nc"><i>622</i>&nbsp;    int nRow = mat.getRowDimension();</b>
+<b class="nc"><i>623</i>&nbsp;    double[] rowSums = rowsSums(mat);</b>
+<b class="nc"><i>624</i>&nbsp;    double meanRowSum = mean(rowSums);</b>
+<b class="nc"><i>625</i>&nbsp;    double[] framesCanLose = new double[nRow];</b>
+<b class="nc"><i>626</i>&nbsp;    double[] framesCanGet = framesCanLose.clone();</b>
+<b class="nc"><i>627</i>&nbsp;    for (int frame = 0; frame != nRow; ++frame) {</b>
+<b class="nc"><i>628</i>&nbsp;      framesCanLose[frame] = Math.max(0, rowSums[frame] - meanRowSum);</b>
+<b class="nc"><i>629</i>&nbsp;      framesCanGet[frame] = Math.max(0, meanRowSum - rowSums[frame]);</b>
+<i>630</i>&nbsp;    }
+<b class="nc"><i>631</i>&nbsp;    return (long) Math.min(sum(framesCanGet),</b>
+<b class="nc"><i>632</i>&nbsp;            sum(framesCanLose));</b>
+<i>633</i>&nbsp;  }
+<i>634</i>&nbsp;
+<i>635</i>&nbsp;  private long getMaxSwaps(double[] framesCanLose, double[] framesCanGet) {
+<b class="nc"><i>636</i>&nbsp;    return (long) Math.min(sum(framesCanLose),</b>
+<b class="nc"><i>637</i>&nbsp;            sum(framesCanGet));</b>
+<i>638</i>&nbsp;  }
+<i>639</i>&nbsp;
+<i>640</i>&nbsp;  private void performSwaps(Matrix mat, Matrix origMat,
+<i>641</i>&nbsp;                            long nSwaps, long seed) {
+<b class="nc"><i>642</i>&nbsp;    if (nSwaps == 0) {</b>
+<b class="nc"><i>643</i>&nbsp;      return;</b>
+<i>644</i>&nbsp;    }
+<b class="nc"><i>645</i>&nbsp;    int nRow = mat.getRowDimension(), nCol = mat.getColumnDimension();</b>
+<b class="nc"><i>646</i>&nbsp;    double[] rowSums = rowsSums(mat);</b>
+<b class="nc"><i>647</i>&nbsp;    double meanRowSum = mean(rowSums);</b>
+<b class="nc"><i>648</i>&nbsp;    double origMean = mean(origMat.getRowPackedCopy());</b>
+<b class="nc"><i>649</i>&nbsp;    double[] frameWeights = rowsMeans(origMat);</b>
+<b class="nc"><i>650</i>&nbsp;    for (int w = 0; w != nRow; ++w) {</b>
+<b class="nc"><i>651</i>&nbsp;      frameWeights[w] -= origMean;</b>
+<i>652</i>&nbsp;    }
+<b class="nc"><i>653</i>&nbsp;    double[] frameLosingWeights = frameWeights.clone();</b>
+<b class="nc"><i>654</i>&nbsp;    double[] frameGettingWeights = frameWeights.clone();</b>
+<b class="nc"><i>655</i>&nbsp;    for (int w = 0; w != nRow; ++w) {</b>
+<b class="nc"><i>656</i>&nbsp;      if (frameWeights[w] &gt; 0) {</b>
+<b class="nc"><i>657</i>&nbsp;        frameGettingWeights[w] = 0;</b>
+<i>658</i>&nbsp;      } else {
+<b class="nc"><i>659</i>&nbsp;        frameLosingWeights[w] = 0;</b>
+<b class="nc"><i>660</i>&nbsp;        frameGettingWeights[w] *= -1;</b>
+<i>661</i>&nbsp;      }
+<i>662</i>&nbsp;    }
+<b class="nc"><i>663</i>&nbsp;    int[] frameIndex = IntStream.range(0, nRow).toArray();</b>
+<b class="nc"><i>664</i>&nbsp;    EnumeratedIntegerDistribution frameLosingIntDist =</b>
+<i>665</i>&nbsp;            new EnumeratedIntegerDistribution(frameIndex, frameLosingWeights);
+<b class="nc"><i>666</i>&nbsp;    frameLosingIntDist.reseedRandomGenerator(seed++);</b>
+<b class="nc"><i>667</i>&nbsp;    EnumeratedIntegerDistribution frameGettingIntDist =</b>
+<i>668</i>&nbsp;            new EnumeratedIntegerDistribution(frameIndex, frameGettingWeights);
+<b class="nc"><i>669</i>&nbsp;    frameGettingIntDist.reseedRandomGenerator(seed++);</b>
+<b class="nc"><i>670</i>&nbsp;    EnumeratedIntegerDistribution[] pxGiveWeights =</b>
+<i>671</i>&nbsp;            new EnumeratedIntegerDistribution[nRow];
+<b class="nc"><i>672</i>&nbsp;    int[] pxIndex = IntStream.range(0, nCol).toArray();</b>
+<b class="nc"><i>673</i>&nbsp;    Matrix weightMat = origMat.copy();</b>
+<b class="nc"><i>674</i>&nbsp;    for (int row = 0; row != nRow; ++row) {</b>
+<b class="nc"><i>675</i>&nbsp;      double[] weightRow = getRow(weightMat, row);</b>
+<b class="nc"><i>676</i>&nbsp;      double[] matRow = getRow(mat, row);</b>
+<b class="nc"><i>677</i>&nbsp;      for (int col = 0; col != nCol; ++col) {</b>
+<b class="nc"><i>678</i>&nbsp;        if (matRow[col] == 0) {</b>
+<b class="nc"><i>679</i>&nbsp;          weightRow[col] = 0;</b>
+<i>680</i>&nbsp;        }
+<i>681</i>&nbsp;      }
+<b class="nc"><i>682</i>&nbsp;      pxGiveWeights[row] = new EnumeratedIntegerDistribution(pxIndex, weightRow);</b>
+<b class="nc"><i>683</i>&nbsp;      pxGiveWeights[row].reseedRandomGenerator(seed++);</b>
+<i>684</i>&nbsp;    }
+<b class="nc"><i>685</i>&nbsp;    double[] framesCanLose = new double[nRow];</b>
+<b class="nc"><i>686</i>&nbsp;    double[] framesCanGet = framesCanLose.clone();</b>
+<b class="nc"><i>687</i>&nbsp;    for (int frame = 0; frame != nRow; ++frame) {</b>
+<b class="nc"><i>688</i>&nbsp;      framesCanLose[frame] = Math.max(0, rowSums[frame] - meanRowSum);</b>
+<b class="nc"><i>689</i>&nbsp;      framesCanGet[frame] = Math.max(0, meanRowSum - rowSums[frame]);</b>
+<i>690</i>&nbsp;    }
+<b class="nc"><i>691</i>&nbsp;    long maxSwaps = getMaxSwaps(framesCanLose, framesCanGet);</b>
+<b class="nc"><i>692</i>&nbsp;    long performingSwaps = Math.min(nSwaps, maxSwaps);</b>
+<b class="nc"><i>693</i>&nbsp;    for (long swapNum = 0; swapNum != performingSwaps; ++swapNum) {</b>
+<b class="nc"><i>694</i>&nbsp;      int frameLosing = frameLosingIntDist.sample();</b>
+<b class="nc"><i>695</i>&nbsp;      int pxLosing = pxGiveWeights[frameLosing].sample();</b>
+<b class="nc"><i>696</i>&nbsp;      mat.set(frameLosing, pxLosing, mat.get(frameLosing, pxLosing) - 1);</b>
+<b class="nc"><i>697</i>&nbsp;      if (mat.get(frameLosing, pxLosing) == 0) {</b>
+<b class="nc"><i>698</i>&nbsp;        weightMat.set(frameLosing, pxLosing, 0);</b>
+<b class="nc"><i>699</i>&nbsp;        double[] weightRow = getRow(weightMat, frameLosing);</b>
+<b class="nc"><i>700</i>&nbsp;        pxGiveWeights[frameLosing] = new EnumeratedIntegerDistribution(pxIndex, weightRow);</b>
+<b class="nc"><i>701</i>&nbsp;        pxGiveWeights[frameLosing].reseedRandomGenerator(seed++);</b>
+<i>702</i>&nbsp;      }
+<b class="nc"><i>703</i>&nbsp;      int frameGetting = frameGettingIntDist.sample();</b>
+<b class="nc"><i>704</i>&nbsp;      mat.set(frameGetting, pxLosing, mat.get(frameGetting, pxLosing) + 1);</b>
+<b class="nc"><i>705</i>&nbsp;      if (swapNum != performingSwaps - 1) {</b>
+<b class="nc"><i>706</i>&nbsp;        if ((--framesCanLose[frameLosing]) &lt;= 0) {</b>
+<b class="nc"><i>707</i>&nbsp;          frameLosingWeights[frameLosing] = 0;</b>
+<b class="nc"><i>708</i>&nbsp;          frameLosingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameLosingWeights);</b>
+<i>709</i>&nbsp;        }
+<b class="nc"><i>710</i>&nbsp;        if ((--framesCanGet[frameGetting]) &lt;= 0) {</b>
+<b class="nc"><i>711</i>&nbsp;          frameGettingWeights[frameGetting] = 0;</b>
+<b class="nc"><i>712</i>&nbsp;          frameGettingIntDist = new EnumeratedIntegerDistribution(frameIndex, frameGettingWeights);</b>
+<i>713</i>&nbsp;        }
+<i>714</i>&nbsp;      }
+<i>715</i>&nbsp;    }
+<b class="nc"><i>716</i>&nbsp;  }</b>
+<i>717</i>&nbsp;
+<i>718</i>&nbsp;  /**
+<i>719</i>&nbsp;   * Perform the swaps for Robin Hood detrending.
+<i>720</i>&nbsp;   *
+<i>721</i>&nbsp;   * @param oneChImPlus A one-channel, multi-frame ImagePlus.
+<i>722</i>&nbsp;   * @param nSwaps      The number of swaps to perform, probably calculated with calcIdealSwaps.
+<i>723</i>&nbsp;   * @param seed        For random number generation, to select which counts to swap.
+<i>724</i>&nbsp;   * @return The detrended image.
+<i>725</i>&nbsp;   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+<i>726</i>&nbsp;   */
+<i>727</i>&nbsp;  ImagePlus performSwaps(ImagePlus oneChImPlus, long nSwaps, int seed)
+<i>728</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>729</i>&nbsp;    oneChImPlus = assertOneChManyFrames(oneChImPlus, &quot;performSwaps&quot;);</b>
+<b class="nc"><i>730</i>&nbsp;    if (nSwaps &lt; 0) {</b>
+<b class="nc"><i>731</i>&nbsp;      throw new IllegalArgumentException(</b>
+<i>732</i>&nbsp;              &quot;nSwaps must be positive.\n&quot; +
+<i>733</i>&nbsp;                      &quot;  * You have specified nSwaps = &quot; + nSwaps + &quot;.&quot;
+<i>734</i>&nbsp;      );
+<i>735</i>&nbsp;    }
+<b class="nc"><i>736</i>&nbsp;    int width = oneChImPlus.getDimensions()[0];</b>
+<b class="nc"><i>737</i>&nbsp;    Matrix mat = convertToMatrix(oneChImPlus);</b>
+<b class="nc"><i>738</i>&nbsp;    performSwaps(mat, mat.copy(), nSwaps, seed);</b>
+<b class="nc"><i>739</i>&nbsp;    return convertToImagePlus(mat, width);</b>
+<i>740</i>&nbsp;  }
+<i>741</i>&nbsp;
+<i>742</i>&nbsp;  /**
+<i>743</i>&nbsp;   * Calculate the ideal number of swaps to make on an image during Robin Hood detrending.
+<i>744</i>&nbsp;   *
+<i>745</i>&nbsp;   * @param oneChImPlus A one-channel, multi-frame ImagePlus.
+<i>746</i>&nbsp;   * @param seed        For random number generation during simulations.
+<i>747</i>&nbsp;   * @return The ideal number of swaps.
+<i>748</i>&nbsp;   * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
+<i>749</i>&nbsp;   */
+<i>750</i>&nbsp;  long calcIdealSwaps(ImagePlus oneChImPlus, int seed)
+<i>751</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>752</i>&nbsp;    oneChImPlus = assertOneChManyFrames(oneChImPlus, &quot;calcIdealSwaps&quot;);</b>
+<b class="nc"><i>753</i>&nbsp;    Matrix simMat = simMat(oneChImPlus, seed++);</b>
+<b class="nc"><i>754</i>&nbsp;    double lowerMeanB = colsMeanBrightnessB(simMat);</b>
+<b class="nc"><i>755</i>&nbsp;    if (lowerMeanB &lt;= 1) {</b>
+<b class="nc"><i>756</i>&nbsp;      return 0;</b>
+<i>757</i>&nbsp;    }
+<b class="nc"><i>758</i>&nbsp;    Matrix leastMat = simMat.copy();</b>
+<b class="nc"><i>759</i>&nbsp;    long maxSwaps = getMaxSwaps(simMat);</b>
+<b class="nc"><i>760</i>&nbsp;    long mostSwaps = 1, leastSwaps = 0;</b>
+<b class="nc"><i>761</i>&nbsp;    Matrix mostMat = leastMat.copy();</b>
+<b class="nc"><i>762</i>&nbsp;    performSwaps(mostMat, simMat, mostSwaps, seed++);</b>
+<b class="nc"><i>763</i>&nbsp;    while (colsMeanBrightnessB(mostMat) &gt; 1) {</b>
+<b class="nc"><i>764</i>&nbsp;      leastMat = mostMat.copy();</b>
+<b class="nc"><i>765</i>&nbsp;      leastSwaps = mostSwaps;</b>
+<b class="nc"><i>766</i>&nbsp;      long moreSwaps = Math.min(mostSwaps, maxSwaps - mostSwaps);</b>
+<b class="nc"><i>767</i>&nbsp;      performSwaps(mostMat, simMat, moreSwaps, seed++);</b>
+<b class="nc"><i>768</i>&nbsp;      mostSwaps += moreSwaps;</b>
+<b class="nc"><i>769</i>&nbsp;      if (mostSwaps == maxSwaps) {</b>
+<b class="nc"><i>770</i>&nbsp;        break;</b>
+<i>771</i>&nbsp;      }
+<b class="nc"><i>772</i>&nbsp;      logInBestWayPossible(&quot;Trying &quot; + mostSwaps + &quot; swaps . . .&quot;);</b>
+<b class="nc"><i>773</i>&nbsp;    }</b>
+<b class="nc"><i>774</i>&nbsp;    logInBestWayPossible(&quot;Trying &quot; + maxSwaps + &quot; swaps . . .&quot;);</b>
+<b class="nc"><i>775</i>&nbsp;    if (colsMeanBrightnessB(mostMat) &gt; 1) {</b>
+<b class="nc"><i>776</i>&nbsp;      logInBestWayPossible(&quot;Settling on &quot; + maxSwaps + &quot; swaps :-)&quot;);</b>
+<b class="nc"><i>777</i>&nbsp;      return maxSwaps;</b>
+<i>778</i>&nbsp;    }
+<b class="nc"><i>779</i>&nbsp;    long middleSwaps = (leastSwaps + mostSwaps) / 2;</b>
+<b class="nc"><i>780</i>&nbsp;    Matrix middleMat = leastMat.copy();</b>
+<b class="nc"><i>781</i>&nbsp;    performSwaps(middleMat, simMat, middleSwaps - leastSwaps, seed++);</b>
+<b class="nc"><i>782</i>&nbsp;    while ((mostSwaps - middleSwaps &gt; 0) &amp;&amp; (middleSwaps - leastSwaps &gt; 0)) {</b>
+<b class="nc"><i>783</i>&nbsp;      double middleMatMeanB = colsMeanBrightnessB(middleMat);</b>
+<b class="nc"><i>784</i>&nbsp;      if (middleMatMeanB &gt; 1) {</b>
+<b class="nc"><i>785</i>&nbsp;        mostSwaps = middleSwaps;</b>
+<b class="nc"><i>786</i>&nbsp;        mostMat = middleMat;</b>
+<b class="nc"><i>787</i>&nbsp;        middleSwaps = (leastSwaps + middleSwaps) / 2;</b>
+<b class="nc"><i>788</i>&nbsp;      } else if (middleMatMeanB &lt; 1) {</b>
+<b class="nc"><i>789</i>&nbsp;        leastSwaps = middleSwaps;</b>
+<b class="nc"><i>790</i>&nbsp;        leastMat = middleMat;</b>
+<b class="nc"><i>791</i>&nbsp;        middleSwaps = (middleSwaps + mostSwaps) / 2;</b>
+<i>792</i>&nbsp;      } else {
+<b class="nc"><i>793</i>&nbsp;        return middleSwaps;  // this line will probably never be run</b>
+<i>794</i>&nbsp;      }
+<b class="nc"><i>795</i>&nbsp;      logInBestWayPossible(&quot;Trying &quot; + middleSwaps + &quot; swaps . . .&quot;);</b>
+<b class="nc"><i>796</i>&nbsp;      middleMat = leastMat.copy();</b>
+<b class="nc"><i>797</i>&nbsp;      performSwaps(middleMat, simMat, middleSwaps - leastSwaps, seed++);</b>
+<b class="nc"><i>798</i>&nbsp;    }</b>
+<b class="nc"><i>799</i>&nbsp;    long[] swaps = {leastSwaps, middleSwaps, mostSwaps};</b>
+<b class="nc"><i>800</i>&nbsp;    Matrix[] mats = {leastMat, middleMat, mostMat};</b>
+<b class="nc"><i>801</i>&nbsp;    double diffs1[] = new double[3];</b>
+<b class="nc"><i>802</i>&nbsp;    for (int i = 0; i != 3; ++i) {</b>
+<b class="nc"><i>803</i>&nbsp;      diffs1[i] = absDiff(colsMeanBrightnessB(mats[i]), 1);</b>
+<i>804</i>&nbsp;    }
+<b class="nc"><i>805</i>&nbsp;    long out = swaps[whichMin(diffs1)];</b>
+<b class="nc"><i>806</i>&nbsp;    logInBestWayPossible(&quot;Settling on &quot; + out + &quot; swaps :-)&quot;);</b>
+<b class="nc"><i>807</i>&nbsp;    return out;</b>
+<i>808</i>&nbsp;  }
+<i>809</i>&nbsp;
+<i>810</i>&nbsp;  /**
+<i>811</i>&nbsp;   * Detrend an ImagePlus with the Robin Hood algorithm, automatically choosing the number of swaps.
+<i>812</i>&nbsp;   *
+<i>813</i>&nbsp;   * @param imPlus The multi-frame image to detrend.
+<i>814</i>&nbsp;   * @param seed   For random number generation for simulations and swapping.
+<i>815</i>&nbsp;   * @return The detrended image.
+<i>816</i>&nbsp;   * @throws DataFormatException if imPlus has time and z axes.
+<i>817</i>&nbsp;   */
+<i>818</i>&nbsp;  ImagePlus detrend(ImagePlus imPlus, int seed)
+<i>819</i>&nbsp;          throws DataFormatException {
+<b class="nc"><i>820</i>&nbsp;    ImagePlus myImPlus = makeMine(imPlus);</b>
+<b class="nc"><i>821</i>&nbsp;    int nCh = myImPlus.getDimensions()[2];</b>
+<b class="nc"><i>822</i>&nbsp;    if (nCh &gt; 7) {</b>
+<b class="nc"><i>823</i>&nbsp;      throw new DataFormatException(</b>
+<i>824</i>&nbsp;              &quot;Can only detrend images of up to 7 channels. \n&quot; +
+<i>825</i>&nbsp;                      &quot;  * You have attempted to detrend an image with &quot; + nCh + &quot;channels.&quot;
+<i>826</i>&nbsp;      );
+<i>827</i>&nbsp;    }
+<b class="nc"><i>828</i>&nbsp;    ImagePlus[] channelArr = new ImagePlus[nCh];</b>
+<b class="nc"><i>829</i>&nbsp;    ImagePlus[] outChannelArr = new ImagePlus[nCh];</b>
+<b class="nc"><i>830</i>&nbsp;    for (int i = 0; i != nCh; ++i) {</b>
+<b class="nc"><i>831</i>&nbsp;      logInBestWayPossible(&quot;Detrending channel &quot; + (i + 1) + &quot; . . .&quot;);</b>
+<b class="nc"><i>832</i>&nbsp;      channelArr[i] = makeMyOneCh(myImPlus, i + 1);</b>
+<b class="nc"><i>833</i>&nbsp;      long nSwaps = calcIdealSwaps(channelArr[i], seed++);</b>
+<b class="nc"><i>834</i>&nbsp;      outChannelArr[i] = performSwaps(channelArr[i], nSwaps, seed++);</b>
+<b class="nc"><i>835</i>&nbsp;      logInBestWayPossible(&quot;Finished detrending channel &quot; + (i + 1) + &quot; :-)\n&quot;);</b>
+<i>836</i>&nbsp;    }
+<b class="nc"><i>837</i>&nbsp;    logInBestWayPossible(&quot;Wrapping up . . . \n&quot;);</b>
+<i>838</i>&nbsp;    ImagePlus out;
+<b class="nc"><i>839</i>&nbsp;    if (outChannelArr.length == 1) {</b>
+<b class="nc"><i>840</i>&nbsp;      out = outChannelArr[0];</b>
+<i>841</i>&nbsp;    } else {
+<b class="nc"><i>842</i>&nbsp;      out = RGBStackMerge.mergeChannels(outChannelArr, false);</b>
+<i>843</i>&nbsp;    }
+<b class="nc"><i>844</i>&nbsp;    logInBestWayPossible(&quot;Done :-) \n\n&quot;);</b>
+<b class="nc"><i>845</i>&nbsp;    return out;</b>
+<i>846</i>&nbsp;  }
+<i>847</i>&nbsp;
+<i>848</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2018-10-04 10:48</div>
+</div>
+</body>
+</html>

@@ -35,4 +35,16 @@ class DetrendTest {
       assertEquals("this", "that");
     }
   }
+
+  @Test
+  void testFileNameStuff() {
+    Detrendr detrendr = new Detrendr();
+    assertEquals("abc_d", detrendr.insertIntoFileName("abc", "d"));
+    assertEquals("d", detrendr.insertIntoFileName(".", "d"));
+    assertEquals("abc_d.tif", detrendr.insertIntoFileName("abc.tif", "d"));
+    assertEquals("abc_d", detrendr.insertIntoFileName("abc.", "d"));
+    assertEquals("abc_d", detrendr.insertIntoFileName(".abc", "d"));
+    assertEquals("abc2.3_d.tif",
+            detrendr.insertIntoFileName("abc2.3.tif", "d"));
+  }
 }
