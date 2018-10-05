@@ -8,10 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2d453559-5809-4b5d-8dc2-9ed626d255a1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/rorynolan/detrendr/Detrendr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrendr.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/net/rorynolan/detrendr/Detrendr.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/net/rorynolan/detrendr/DetrendTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/net/rorynolan/detrendr/DetrendTest.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,7 +24,7 @@
     <SUITE FILE_PATH="coverage/ij_detrendr$All_in_ij_detrendr.ic" NAME="All in ij_detrendr Coverage Results" MODIFIED="1538646152808" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
-    <option name="myElementSize" value="212" />
+    <option name="myElementSize" value="202" />
   </component>
   <component name="ExportToHTMLSettings">
     <option name="OPEN_IN_BROWSER" value="true" />
@@ -38,7 +34,7 @@
     <session id="1157126725">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="17" />
+          <entry key="project.closed" value="18" />
           <entry key="project.open.time.1" value="5" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.4" value="1" />
@@ -52,7 +48,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="java" value="25461" />
+          <entry key="java" value="25492" />
           <entry key="md" value="80" />
           <entry key="xml" value="693" />
           <entry key="yml" value="2" />
@@ -60,7 +56,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="25461" />
+          <entry key="JAVA" value="25492" />
           <entry key="Markdown" value="80" />
           <entry key="PLAIN_TEXT" value="5" />
           <entry key="XML" value="693" />
@@ -104,8 +100,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="59" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="59" />
+            <state relative-caret-position="799">
+              <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -209,11 +205,10 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1440" />
-    <option name="y" value="-1487" />
-    <option name="width" value="1440" />
-    <option name="height" value="2537" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1680" />
+    <option name="height" value="967" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -281,7 +276,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="code style&#9;ACTION&#9;ChangeCodeStyleScheme" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538646573363" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538646884197" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -401,24 +396,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 14m 00s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 15m 47s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 17m 12s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 18m 50s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 19m 33s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DetrendTest - 2018.10.04 at 10h 23m 59s.xml">
-      <configuration name="DetrendTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_in_ij_detrendr - 2018.10.04 at 10h 28m 29s.xml">
       <configuration name="All in ij_detrendr" configurationId="JUnit" />
     </history-entry>
@@ -430,6 +407,24 @@
     </history-entry>
     <history-entry file="All_in_ij_detrendr - 2018.10.04 at 10h 43m 23s.xml">
       <configuration name="All in ij_detrendr" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 46m 35s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 46m 40s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 48m 03s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 48m 42s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 48m 46s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DetrendTest_testFileNameStuff - 2018.10.04 at 10h 49m 35s.xml">
+      <configuration name="DetrendTest.testFileNameStuff" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TodoView">
@@ -443,7 +438,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1440" y="-1487" width="1440" height="2537" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49935484" visible="true" weight="0.37124464" />
       <window_info id="Structure" order="1" sideWeight="0.50064516" side_tool="true" weight="0.26037195" />
@@ -454,13 +448,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32997903" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.14601228" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.14601228" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32914287" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.19226393" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.19222903" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32914287" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.116973415" />
       <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32904148" />
@@ -556,8 +550,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/net/rorynolan/detrendr/DetrendTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="59" selection-start-line="45" selection-start-column="59" selection-end-line="45" selection-end-column="59" />
+        <state relative-caret-position="799">
+          <caret line="47" column="47" selection-start-line="47" selection-start-column="47" selection-end-line="47" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
