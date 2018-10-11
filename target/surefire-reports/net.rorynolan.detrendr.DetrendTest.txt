@@ -1,10 +1,10 @@
 -------------------------------------------------------------------------------
 Test set: net.rorynolan.detrendr.DetrendTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.068 s <<< FAILURE! - in net.rorynolan.detrendr.DetrendTest
-testDetrendingAndBrightness  Time elapsed: 0.057 s  <<< ERROR!
+Tests run: 2, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.102 s <<< FAILURE! - in net.rorynolan.detrendr.DetrendTest
+testDetrendingAndBrightness(net.rorynolan.detrendr.DetrendTest)  Time elapsed: 0.055 s  <<< ERROR!
 java.lang.ExceptionInInitializerError
-	at net.rorynolan.detrendr.DetrendTest.testDetrendingAndBrightness(DetrendTest.java:17)
+	at net.rorynolan.detrendr.DetrendTest.testDetrendingAndBrightness(DetrendTest.java:19)
 Caused by: java.lang.StringIndexOutOfBoundsException: begin 0, end 3, length 2
-	at net.rorynolan.detrendr.DetrendTest.testDetrendingAndBrightness(DetrendTest.java:17)
+	at net.rorynolan.detrendr.DetrendTest.testDetrendingAndBrightness(DetrendTest.java:19)
 

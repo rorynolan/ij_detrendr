@@ -2,33 +2,42 @@ package net.rorynolan.detrendr;
 
 import Jama.Matrix;
 import ij.ImagePlus;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.zip.DataFormatException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-class DetrendTest {
+
+public class DetrendTest {
 
   @Test
-  void testDetrendingAndBrightness() {
+  public void testDetrendingAndBrightness() {
     try {
-      String nandbImgUrl = "https://github.com/rorynolan/nandb/raw/master/inst/extdata/50.tif";
+      String nandbImgUrl = "https://github.com/rorynolan/nandb/raw/master/inst/extdata/two_ch.tif";
       ImagePlus img = new ImagePlus(nandbImgUrl);
       Detrendr detrendr = new Detrendr();
-      Matrix imgMat = detrendr.convertToMatrix(img);
-      double[] frameMeans = detrendr.rowsMeans(imgMat);
-      double frameMeansVar = detrendr.var(frameMeans);
-      double origMeanB = detrendr.colsMeanBrightnessB(imgMat);
-      assertEquals(1.045, origMeanB, 0.001);
-      for (int seed = 1; seed != 50; ++seed) {
+      ImagePlus imgHuanged = detrendr.stackThresh(img, "Huang", 0);
+      int nCh = img.getDimensions()[2];
+      Matrix[] imgMats = new Matrix[nCh];
+      double[] origMeanB = new double[nCh];
+      double[] expectedMeanBs = {1.035, 1.259};
+      for (int i = 0; i != nCh; ++i) {
+        imgMats[i] = detrendr.convertToMatrix(detrendr.makeMyOneCh(imgHuanged, i + 1));
+        origMeanB[i] = detrendr.colsMeanBrightnessB(imgMats[i]);
+        assertEquals(expectedMeanBs[i], origMeanB[i], 0.001);
+      }
+      for (int seed = 1; seed != 20; ++seed) {
         ImagePlus detrended = detrendr.detrend(img, seed);
-        Matrix detrendedMat = detrendr.convertToMatrix(detrended);
-        double[] detrendedFrameMeans = detrendr.rowsMeans(detrendedMat);
-        double detrendedFrameMeansVar = detrendr.var(detrendedFrameMeans);
-        assertTrue(frameMeansVar >= detrendedFrameMeansVar);
-        double detrendedMeanB = detrendr.colsMeanBrightnessB(detrendedMat);
-        assertEquals(1.044, detrendedMeanB, 0.002);
+        Matrix[] detrendedMats = new Matrix[nCh];
+        double[] detrendedMeanBs = new double[nCh];
+        double[] expectedDetrendedMeanBs = {1.032, 1.241};
+        for (int i = 0; i != nCh; ++i) {
+          detrendedMats[i] = detrendr.convertToMatrix(detrendr.makeMyOneCh(detrended, i + 1));
+          detrendedMeanBs[i] = detrendr.colsMeanBrightnessB(detrendedMats[i]);
+          assertEquals(expectedDetrendedMeanBs[i], detrendedMeanBs[i], 0.02);
+        }
       }
     } catch (DataFormatException e) {
       System.out.println(e);
@@ -37,7 +46,7 @@ class DetrendTest {
   }
 
   @Test
-  void testFileNameStuff() {
+  public void testFileNameStuff() {
     Detrendr detrendr = new Detrendr();
     assertEquals("abc_d", detrendr.insertIntoFileName("abc", "d"));
     assertEquals("d", detrendr.insertIntoFileName(".", "d"));

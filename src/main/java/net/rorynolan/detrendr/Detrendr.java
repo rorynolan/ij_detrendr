@@ -19,7 +19,6 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
 import java.util.zip.DataFormatException;
 
 
@@ -33,7 +32,7 @@ public class Detrendr implements Command {
    * This is just for the developers of the package to test how it's going.
    *
    * @param args Should be left blank.
-   * @throws NoSuchElementException
+   * @throws NoSuchElementException I don't know why.
    */
   public static void main(String[] args) throws NoSuchElementException {
     Class<?> cls = Detrendr.class;
@@ -124,7 +123,7 @@ public class Detrendr implements Command {
 
   // ImageJ Utilities ---------------------------------------------------------------------------
 
-  void logInBestWayPossible(String s) {
+  private void logInBestWayPossible(String s) {
     if (LogService != null) {  // prevents log attempts in wrong context
       LogService.info(s);
     } else {
@@ -132,7 +131,7 @@ public class Detrendr implements Command {
     }
   }
 
-  void errorInBestWayPossible(Throwable e) {
+  private void errorInBestWayPossible(Throwable e) {
     if (LogService != null) {  // prevents log attempts in wrong context
       LogService.error(e);
     } else {
@@ -171,7 +170,7 @@ public class Detrendr implements Command {
     return out;
   }
 
-  private ImagePlus makeMyOneCh(ImagePlus imPlus,
+  ImagePlus makeMyOneCh(ImagePlus imPlus,
                                 int channel)
           throws IllegalArgumentException {  // channel is 1-based
     if (channel < 1) {
@@ -193,7 +192,7 @@ public class Detrendr implements Command {
     return channelArr[channel - 1];
   }
 
-  ImagePlus assertOneChManyFrames(ImagePlus imPlus, String currentFun)
+  private ImagePlus assertOneChManyFrames(ImagePlus imPlus, String currentFun)
           throws DataFormatException {
     int nCh = imPlus.getDimensions()[2];
     if (nCh != 1) {
@@ -221,7 +220,7 @@ public class Detrendr implements Command {
     return out;
   }
 
-  ImagePlus convertToImagePlus(Matrix mat, int width)
+  private ImagePlus convertToImagePlus(Matrix mat, int width)
           throws IllegalArgumentException {
     int matNCol = mat.getColumnDimension(), matNRow = mat.getRowDimension();
     if (width < 1) {
@@ -322,7 +321,7 @@ public class Detrendr implements Command {
     return sum;
   }
 
-  double mean(double[] data) {
+  private double mean(double[] data) {
     return sum(data) / data.length;
   }
 
@@ -399,7 +398,7 @@ public class Detrendr implements Command {
     return out;
   }
 
-  double[] rowsMeans(Matrix mat) {
+  private double[] rowsMeans(Matrix mat) {
     int nRow = mat.getRowDimension();
     int nCol = mat.getColumnDimension();
     double[] out = rowsSums(mat);
@@ -409,7 +408,7 @@ public class Detrendr implements Command {
     return out;
   }
 
-  double[] colsMeans(Matrix mat) {
+  private double[] colsMeans(Matrix mat) {
     int nRow = mat.getRowDimension();
     int nCol = mat.getColumnDimension();
     double[] out = colsSums(mat);
@@ -449,11 +448,33 @@ public class Detrendr implements Command {
 
   // Thresholding -------------------------------------------------------------------------------
 
+  private final String[] autoThreshMethods = {"None", "Default", "Huang", "Intermodes",
+          "IsoData", "Li", "MaxEntropy", "Mean", "MinError",
+          "Minimum", "Moments", "Otsu", "Percentile",
+          "RenyiEntropy", "Shanbhag", "Triangle", "Yen"};
+
+  private boolean contains(String[] arr, String s) {
+    for (int i = 0; i != arr.length; ++i) {
+      if (s.equals(arr[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private String getAutoThreshMethodAltName(String s) {
+    if (contains(autoThreshMethods, s)) {
+      if (s.equals("IsoData")) return "IJ_IsoData";
+      return s;
+    }
+    return autoThreshMethods[0];
+  }
+
   /**
    * Threshold a stack based on the mean intensity profile. For a given xy pixel position in the stack, either all of
    * the pixels in all of the frames at that position are thresholded away to zero or none are.
    *
-   * @param oneChImPlus  A one channel, multi-frame ImagePlus.
+   * @param imPlus       A multi-frame ImagePlus.
    * @param method       For choosing the threshold automatically. Must be one of "Default", "Huang", "Intermodes", "IsoData",
    *                     "Li", "MaxEntropy", "Mean", "MinError","Minimum", "Moments", "Otsu", "Percentile", "RenyiEntropy",
    *                     "Shanbhag", "Triangle", or "Yen".
@@ -464,7 +485,36 @@ public class Detrendr implements Command {
    * @return The stack-thresholded image.
    * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
    */
-  ImagePlus stackThresh(ImagePlus oneChImPlus,
+  ImagePlus stackThresh(ImagePlus imPlus, String method, double manualThresh)
+          throws DataFormatException {
+    ImagePlus myImPlus = makeMine(imPlus);
+    int nCh = myImPlus.getDimensions()[2];
+    if (nCh > 7) {
+      throw new DataFormatException(
+              "Can only threshold images of up to 7 channels. \n" +
+                      "  * You have attempted to threshold an image with " + nCh + "channels."
+      );
+    }
+    ImagePlus[] channelArr = new ImagePlus[nCh];
+    ImagePlus[] outChannelArr = new ImagePlus[nCh];
+    for (int i = 0; i != nCh; ++i) {
+      logInBestWayPossible("Thresholding channel " + (i + 1) + " . . .");
+      channelArr[i] = makeMyOneCh(myImPlus, i + 1);
+      outChannelArr[i] = stackThreshOneCh(channelArr[i], method, manualThresh);
+      logInBestWayPossible("Finished thresholding channel " + (i + 1) + " :-)\n");
+    }
+    logInBestWayPossible("Wrapping up thresholding . . . \n");
+    ImagePlus out;
+    if (outChannelArr.length == 1) {
+      out = outChannelArr[0];
+    } else {
+      out = RGBStackMerge.mergeChannels(outChannelArr, false);
+    }
+    logInBestWayPossible("Finished thresholding. \n\n");
+    return out;
+  }
+
+  private ImagePlus stackThreshOneCh(ImagePlus oneChImPlus,
                         String method,
                         double manualThresh)
           throws DataFormatException {
@@ -498,8 +548,8 @@ public class Detrendr implements Command {
     if (prelimHistLength > histLength) {
       adjustFactor = (double) histLength / prelimHistLength;
       for (int col = 0; col != nCol; ++col) {
-        int index = (int) (colSums[col] * adjustFactor);
-        ++hist[index - min];
+        int index = (int) ((colSums[col] - min) * adjustFactor);
+        ++hist[index];
       }
     } else {
       for (int col = 0; col != nCol; ++col) {
@@ -507,57 +557,7 @@ public class Detrendr implements Command {
       }
     }
     AutoThresholder autoT = new AutoThresholder();
-    double thresh = -1;
-    switch (method) {
-      case "Default":
-        thresh = autoT.getThreshold("Default", hist);
-        break;
-      case "Huang":
-        thresh = autoT.getThreshold("Huang", hist);
-        break;
-      case "Intermodes":
-        thresh = autoT.getThreshold("Intermodes", hist);
-        break;
-      case "IsoData":
-        thresh = autoT.getThreshold("IJ_IsoData", hist);
-        break;
-      case "Li":
-        thresh = autoT.getThreshold("Li", hist);
-        break;
-      case "MaxEntropy":
-        thresh = autoT.getThreshold("MaxEntropy", hist);
-        break;
-      case "Mean":
-        thresh = autoT.getThreshold("Mean", hist);
-        break;
-      case "MinError":
-        thresh = autoT.getThreshold("MinError", hist);
-        break;
-      case "Minimum":
-        thresh = autoT.getThreshold("Minimum", hist);
-        break;
-      case "Moments":
-        thresh = autoT.getThreshold("Moments", hist);
-        break;
-      case "Otsu":
-        thresh = autoT.getThreshold("Otsu", hist);
-        break;
-      case "Percentile":
-        thresh = autoT.getThreshold("Percentile", hist);
-        break;
-      case "RenyiEntropy":
-        thresh = autoT.getThreshold("RenyiEntropy", hist);
-        break;
-      case "Shanbhag":
-        thresh = autoT.getThreshold("Shanbhag", hist);
-        break;
-      case "Triangle":
-        thresh = autoT.getThreshold("Triangle", hist);
-        break;
-      case "Yen":
-        thresh = autoT.getThreshold("Yen", hist);
-        break;
-    }
+    double thresh = autoT.getThreshold(getAutoThreshMethodAltName(method), hist);
     if (thresh < 0) {
       throw new IllegalArgumentException(
               "Threshold was calculated to be less than zero. " +
@@ -637,6 +637,14 @@ public class Detrendr implements Command {
             sum(framesCanGet));
   }
 
+  private int[] seqLen(int len) {
+    int[] out = new int[len];
+    for (int i = 0; i != len; ++i) {
+      out[i] = i;
+    }
+    return out;
+  }
+
   private void performSwaps(Matrix mat, Matrix origMat,
                             long nSwaps, long seed) {
     if (nSwaps == 0) {
@@ -660,7 +668,7 @@ public class Detrendr implements Command {
         frameGettingWeights[w] *= -1;
       }
     }
-    int[] frameIndex = IntStream.range(0, nRow).toArray();
+    int[] frameIndex = seqLen(nRow);
     EnumeratedIntegerDistribution frameLosingIntDist =
             new EnumeratedIntegerDistribution(frameIndex, frameLosingWeights);
     frameLosingIntDist.reseedRandomGenerator(seed++);
@@ -669,7 +677,7 @@ public class Detrendr implements Command {
     frameGettingIntDist.reseedRandomGenerator(seed++);
     EnumeratedIntegerDistribution[] pxGiveWeights =
             new EnumeratedIntegerDistribution[nRow];
-    int[] pxIndex = IntStream.range(0, nCol).toArray();
+    int[] pxIndex = seqLen(nCol);
     Matrix weightMat = origMat.copy();
     for (int row = 0; row != nRow; ++row) {
       double[] weightRow = getRow(weightMat, row);
