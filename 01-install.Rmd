@@ -1,6 +1,9 @@
 # Installation
 
-```{r vid}
+The following video shows how to install the `Detrendr` plugin. This video can be viewed in full-screen at https://www.youtube.com/watch?v=4Xf2sQmLyN4.
+
+```{r vid, echo=FALSE}
 include_url("https://www.youtube.com/embed/4Xf2sQmLyN4")
 ```
 
+The basic idea is to go to `Help > Update` and then click on `Manage update sites`. Then make sure that the updates `ImageJ`, `Fiji`, `Fiji-legacy` and `java-8` are checked. Then click on `Add update site`. Enter the URL as http://sites.imagej.net/Nool and enter site name `Nool`. Then click `Close` followed by  `Apply changes`. Then restart ImageJ and you're done!

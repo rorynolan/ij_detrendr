@@ -13,7 +13,6 @@ description: "A tutorial on the Detrendr ImageJ plugin"
 ---
 
 ```{r load-pkgs, include=FALSE}
-# The dev version of latex2exp is needed
 pacman::p_load(tidyverse, bookdown, knitr)
 
 opts_chunk$set(comment = "#>", fig.asp = 0.6, 
@@ -21,7 +20,8 @@ opts_chunk$set(comment = "#>", fig.asp = 0.6,
                message = FALSE, warning = FALSE)
 ```
 
-# Introduction {-#intro}
+# Introduction {-}
+
 
 This is a tutorial on the _Detrendr_ plugin for _ImageJ_ [@ImageJ]. This plugin implements _Robin Hood_ detrending. For now, the only place you can read about this is in my thesis [@MyThesis], but work is underway on a paper about this. So for now, if you want to learn about the _Robin Hood_ algorithm, go there. This tutorial is about teaching you how to use the _ImageJ_ implementation of the algorithm, it's not intended to teach you how the algorithm itself works.
 

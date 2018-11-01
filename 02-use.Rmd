@@ -1,2 +1,3 @@
 # Use
 
+The following video shows how to use the `Detrendr` plugin.
