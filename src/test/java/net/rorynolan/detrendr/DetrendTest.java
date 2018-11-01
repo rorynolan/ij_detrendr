@@ -15,14 +15,14 @@ public class DetrendTest {
   @Test
   public void testDetrendingAndBrightness() {
     try {
-      String nandbImgUrl = "https://github.com/rorynolan/nandb/raw/master/inst/extdata/two_ch.tif";
+      String nandbImgUrl = "https://github.com/rorynolan/ij_detrendr/raw/master/img/three_ch.tif";
       ImagePlus img = new ImagePlus(nandbImgUrl);
+      int nCh = img.getDimensions()[2];
       Detrendr detrendr = new Detrendr();
       ImagePlus imgHuanged = detrendr.stackThresh(img, "Huang", 0);
-      int nCh = img.getDimensions()[2];
       Matrix[] imgMats = new Matrix[nCh];
       double[] origMeanB = new double[nCh];
-      double[] expectedMeanBs = {1.035, 1.259};
+      double[] expectedMeanBs = {1.035, 1.259, 1.035};
       for (int i = 0; i != nCh; ++i) {
         imgMats[i] = detrendr.convertToMatrix(detrendr.makeMyOneCh(imgHuanged, i + 1));
         origMeanB[i] = detrendr.colsMeanBrightnessB(imgMats[i]);
@@ -32,7 +32,7 @@ public class DetrendTest {
         ImagePlus detrended = detrendr.detrend(img, seed);
         Matrix[] detrendedMats = new Matrix[nCh];
         double[] detrendedMeanBs = new double[nCh];
-        double[] expectedDetrendedMeanBs = {1.032, 1.241};
+        double[] expectedDetrendedMeanBs = {1.032, 1.241, 1.032};
         for (int i = 0; i != nCh; ++i) {
           detrendedMats[i] = detrendr.convertToMatrix(detrendr.makeMyOneCh(detrended, i + 1));
           detrendedMeanBs[i] = detrendr.colsMeanBrightnessB(detrendedMats[i]);
