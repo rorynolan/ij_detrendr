@@ -1,25 +1,3 @@
+This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "[Get Started](https://bookdown.org/yihui/bookdown/get-started.html)" at https://bookdown.org/yihui/bookdown/ for how to compile this example into HTML. You may generate a copy of the book in `bookdown::pdf_book` format by calling `bookdown::render_book('index.Rmd', 'bookdown::pdf_book')`. More detailed instructions are available here https://bookdown.org/yihui/bookdown/build-the-book.html.
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# Detrendr
-
-[![Travis-CI Build
-Status](https://travis-ci.org/rorynolan/nandb.svg?branch=master)](https://travis-ci.org/rorynolan/ij_detrendr)
-
-Detrendr is an [ImageJ](https://imagej.net) plugin for detrending images
-with the *Robin Hood* algorithm. This will mainly be of interest to
-those doing fluorescence fluctuation and correlation spectroscopy (FCS
-and FFS).
-
-The project is currently in its infancy. To read more, check out the
-javadoc at <https://rorynolan.github.io/ij_detrendr/javadoc/>.
-
-Work is underway on a [gitbook](https://www.gitbook.com/) to explain the
-plugin better, so if you can wait for that, do.
-
-## Installation
-
-The project is in beta so feel free to try out the plugin. The jar for
-it can be found at <http://sites.imagej.net/Nool/plugins/>. To find out
-how to install a plugin like this, see
-<https://imagej.net/Installing_3rd_party_plugins>.
+You can find the preview of this example at https://bookdown.org/yihui/bookdown-demo/.

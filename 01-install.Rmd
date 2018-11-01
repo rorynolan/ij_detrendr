@@ -1,0 +1,6 @@
+# Installation
+
+```{r vid}
+include_url("https://www.youtube.com/embed/4Xf2sQmLyN4")
+```
+
