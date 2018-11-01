@@ -1,8 +1,5 @@
 matrix:
   include:
-    - language: java
-      jdk:
-        - oraclejdk8
     - language: r
       pandoc_version: 1.19.2.1
       sudo: false
@@ -22,3 +19,4 @@ matrix:
         on:
           branch: master
         local-dir: _book
+    - language: java
