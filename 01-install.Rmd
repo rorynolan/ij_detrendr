@@ -2,7 +2,7 @@
 
 The following video shows how to install the `Detrendr` plugin. This video can be viewed in full-screen at https://www.youtube.com/watch?v=4Xf2sQmLyN4.
 
-```{r vid, echo=FALSE}
+```{r vid-install, echo=FALSE}
 include_url("https://www.youtube.com/embed/4Xf2sQmLyN4")
 ```
 
