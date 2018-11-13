@@ -1,6 +1,7 @@
-## `Detrendr` 0.1.0
+## `Detrendr` 0.1.2
 
-* The first version that I thought fit for public comsumption.
+#### BUG FIXES
+* Fix for error when trying to detrend 32-bit images.
 
 
 ## `Detrendr` 0.1.1
@@ -9,7 +10,6 @@
 * Fix for error when trying to threshold 16-bit images.
 
 
-## `Detrendr` 0.1.2
+## `Detrendr` 0.1.0
 
-#### BUG FIXES
-* Fix for error when trying to detrend 32-bit images.
+* The first version that I thought fit for public comsumption.
