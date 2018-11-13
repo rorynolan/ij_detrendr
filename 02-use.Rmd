@@ -1,6 +1,6 @@
 # Use
 
-The following video shows how to use the `Detrendr` plugin. In this video, the image series contains some background, so thresholding is required. If your image is all foreground, no thresholding is required, so select thresholding method "None".
+The following video shows how to use the `Detrendr` plugin. In this video, the image series contains some background, so thresholding is required. If your image is all foreground, no thresholding is required, so select thresholding method "none".
 
 To view the video in full screen, view it at https://youtu.be/jNU033D0s28.
 

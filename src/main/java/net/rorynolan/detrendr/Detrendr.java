@@ -49,14 +49,15 @@ public class Detrendr implements Command {
 
   @Parameter(
           label = "Automatic thresholding method",
-          choices = {"None", "Default", "Huang", "Intermodes",
+          choices = {"none", "Default", "Huang", "Intermodes",
                   "IsoData", "Li", "MaxEntropy", "Mean", "MinError",
                   "Minimum", "Moments", "Otsu", "Percentile",
                   "RenyiEntropy", "Shanbhag", "Triangle", "Yen"},
           description = "Select 'None' to forego thresholding. " +
                   "To apply thresholding to your image as a preprocessing step, " +
                   "select one of the methods. Browse these methods at " +
-                  "https://imagej.net/Auto_Threshold."
+                  "https://imagej.net/Auto_Threshold.",
+          persist = false
   )
   private String autoThreshMethod;
 
@@ -75,7 +76,7 @@ public class Detrendr implements Command {
                   "(if you don't know what this is for, " +
                   "leave at 1, 1 is fine).",
           initializer = "myOne",
-          min = "1", max = "9999"
+          min = "1", max = "9999", persist = false
   )
   private int seed;
 
@@ -108,7 +109,7 @@ public class Detrendr implements Command {
     try {
       ImagePlus preProcessed;
       ImagePlus out;
-      if (manualThresh > 0 || (!autoThreshMethod.equals("None"))) {
+      if (manualThresh > 0 || (!autoThreshMethod.equals("none"))) {
         preProcessed = stackThresh(img, autoThreshMethod, manualThresh);
         out = detrend(preProcessed, seed);
       } else {
@@ -213,7 +214,7 @@ public class Detrendr implements Command {
       ImageProcessor ip = oneChImgPlus.getProcessor();
       for (int x = 0; x != imDim[0]; ++x) {
         for (int y = 0; y != imDim[1]; ++y) {
-          out.set(slice, x + y * imDim[0], ip.get(x, y));
+          out.set(slice, x + y * imDim[0], ip.getf(x, y));
         }
       }
     }
@@ -448,7 +449,7 @@ public class Detrendr implements Command {
 
   // Thresholding -------------------------------------------------------------------------------
 
-  private final String[] autoThreshMethods = {"None", "Default", "Huang", "Intermodes",
+  private final String[] autoThreshMethods = {"none", "Default", "Huang", "Intermodes",
           "IsoData", "Li", "MaxEntropy", "Mean", "MinError",
           "Minimum", "Moments", "Otsu", "Percentile",
           "RenyiEntropy", "Shanbhag", "Triangle", "Yen"};
@@ -481,7 +482,7 @@ public class Detrendr implements Command {
    * @param manualThresh A positive number. Pixels with a mean intensity of less than manualThresh will be thresholded
    *                     away to zero. If manualThresh is set (greater than zero), it overrides method, i.e. it does not
    *                     matter what method is set to. To be clear, if you want to use manualThresh, set
-   *                     method = "None".
+   *                     method = "none".
    * @return The stack-thresholded image.
    * @throws DataFormatException if oneChImPlus has more than one channel or only one frame.
    */
@@ -811,7 +812,7 @@ public class Detrendr implements Command {
       diffs1[i] = absDiff(colsMeanBrightnessB(mats[i]), 1);
     }
     long out = swaps[whichMin(diffs1)];
-    logInBestWayPossible("Settling on " + out + " swaps :-)");
+    logInBestWayPossible("Settling on " + out + " swaps :-)\n");
     return out;
   }
 
@@ -839,6 +840,9 @@ public class Detrendr implements Command {
       logInBestWayPossible("Detrending channel " + (i + 1) + " . . .");
       channelArr[i] = makeMyOneCh(myImPlus, i + 1);
       long nSwaps = calcIdealSwaps(channelArr[i], seed++);
+      if (nSwaps > 0) {
+        logInBestWayPossible("Performing " + nSwaps + " swaps on channel " + i + " of original image . . .\n");
+      }
       outChannelArr[i] = performSwaps(channelArr[i], nSwaps, seed++);
       logInBestWayPossible("Finished detrending channel " + (i + 1) + " :-)\n");
     }
